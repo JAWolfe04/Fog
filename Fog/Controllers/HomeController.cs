@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Fog.Models;
+using DataLibrary.DataAccess;
+using Microsoft.AspNetCore.Http;
 
 namespace Fog.Controllers
 {
@@ -13,6 +11,17 @@ namespace Fog.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult PlayerHome()
+        {
+            PlayerHomeModel homeModel = new PlayerHomeModel();
+            string Username = HttpContext.Session.GetString("Username");
+            homeModel.PurchasedGames = SQLDataAccess.GetPurchasedGames(Username);
+            homeModel.Friends = SQLDataAccess.GetFriends(Username);
+            homeModel.FollowedStreams = SQLDataAccess.GetFollowedStreams(Username);
+            homeModel.Wishlist = SQLDataAccess.GetWishlist(Username);
+            return View(homeModel);
         }
 
         public IActionResult Privacy()
