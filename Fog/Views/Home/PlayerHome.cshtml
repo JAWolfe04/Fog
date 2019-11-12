@@ -1,0 +1,109 @@
+﻿@using DataLibrary.Models
+
+@model Fog.Models.PlayerHomeModel
+
+@{
+    ViewData["Title"] = "PlayerHome";
+}
+
+<h1>Player Home</h1>
+
+<p>Purchased Games</p>
+<div class="row">
+    <table class="table table-responsive table-hover">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Info</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (GameModel game in Model.PurchasedGames.Take(5))
+            {
+                <tr>
+                    <td>@game.Title</td>
+                    <td>@game.Genre</td>
+                    <td>
+                        @Html.ActionLink("View", "View", new { id = game.GameID })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<p>Friends</p>
+<div class="row">
+    <table class="table table-responsive table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Info</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (PlayerModel friend in Model.Friends.Take(5))
+            {
+                <tr>
+                    <td>@friend.DisplayName</td>
+                    <td>
+                        @Html.ActionLink("View", "View", new { id = friend.Username })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<p>Followed Streams</p>
+<div class="row">
+    <table class="table table-responsive table-hover">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Link</th>
+                <th>Info</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (StreamModel stream in Model.FollowedStreams.Take(5))
+            {
+                <tr>
+                    <td>@stream.Title</td>
+                    <td>@stream.Link</td>
+                    <td>
+                        @Html.ActionLink("View", "View", new { id = stream.StreamID })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<p>Wishlist</p>
+<div class="row">
+    <table class="table table-responsive table-hover">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Price</th>
+                <th>Info</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (GameModel game in Model.Wishlist.Take(5))
+            {
+            <tr>
+                <td>@game.Title</td>
+                <td>@game.Genre</td>
+                <td>@game.price</td>
+                <td>
+                    @Html.ActionLink("View", "View", new { id = game.GameID })
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
