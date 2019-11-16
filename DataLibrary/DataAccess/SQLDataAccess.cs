@@ -51,9 +51,10 @@ namespace DataLibrary.DataAccess
             using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
             {
                 conn.Open();
-                Console.WriteLine("Opening Connection");
                 MySqlCommand cmd = new MySqlCommand("get_DisplayName(@user_name)", conn);
                 cmd.Parameters.AddWithValue("user_name", Username);
+
+                conn.Open();
                 MySqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
@@ -65,17 +66,28 @@ namespace DataLibrary.DataAccess
             return displayName;
         }
 
-        public static bool verifyPlayer(PlayerModel player)
+        public static bool CreatePlayer(PlayerModel player)
+        {
+            return true;
+        }
+
+        public static void DeletePlayer(string Username)
+        {
+
+        }
+
+        public static bool VerifyPlayer(PlayerModel player)
         {
             bool playerExists = false;
 
             using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
             {
-                conn.Open();
                 MySqlCommand cmd = new MySqlCommand("verify_Player", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@username", player.Username);
                 cmd.Parameters.AddWithValue("@password", player.Password);
+
+                conn.Open();
                 MySqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
