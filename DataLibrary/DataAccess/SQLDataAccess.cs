@@ -44,6 +44,27 @@ namespace DataLibrary.DataAccess
             return games;
         }
 
+        public static List<PlayerModel> GetPlayers()
+        {
+            List<PlayerModel> players = new List<PlayerModel>();
+
+            return players;
+        }
+
+        public static List<GameModel> GetGames()
+        {
+            List<GameModel> games = new List<GameModel>();
+
+            return games;
+        }
+
+        public static List<StreamModel> GetStreams()
+        {
+            List<StreamModel> streams = new List<StreamModel>();
+
+            return streams;
+        }
+
         public static string GetPlayerName(string Username)
         {
             string displayName = "";
