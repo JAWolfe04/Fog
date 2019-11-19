@@ -55,6 +55,26 @@ namespace DataLibrary.DataAccess
         {
             List<GameModel> games = new List<GameModel>();
 
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_GameList", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    GameModel game = new GameModel();
+                    game.GameID = Convert.ToInt32(rdr["GameID"]);
+                    game.Title = rdr["GameTitle"].ToString(); ;
+                    game.Genre = rdr["GameGenre"].ToString(); ;
+                    game.price = Convert.ToDouble(rdr["GamePrice"]);
+                    game.Desc = rdr["GameDesc"].ToString();
+                    games.Add(game);
+                }
+                conn.Close();
+            }
+
             return games;
         }
 
