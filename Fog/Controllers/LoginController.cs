@@ -16,7 +16,7 @@ namespace Fog.Controllers
         [HttpPost]
         public IActionResult Login(LoginModel login)
         {
-            PlayerModel player = new PlayerModel();
+            DataLibrary.Models.PlayerModel player = new DataLibrary.Models.PlayerModel();
             player.Username = login.Username;
             player.Password = login.Password;
             if (SQLDataAccess.verifyPlayer(player))

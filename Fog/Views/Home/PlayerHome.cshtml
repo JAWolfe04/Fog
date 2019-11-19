@@ -43,7 +43,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (PlayerModel friend in Model.Friends.Take(5))
+            @foreach (DataLibrary.Models.PlayerModel friend in Model.Friends.Take(5))
             {
                 <tr>
                     <td>@friend.DisplayName</td>

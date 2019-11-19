@@ -1,0 +1,40 @@
+﻿
+@using Microsoft.AspNetCore.Http;
+
+@{
+    ViewData["Title"] = "Admin Page";
+}
+
+<h1 align="center">@Context.Session.GetString("DisplayName")</h1>
+
+
+
+
+<br><br>
+<div style="background-color: #efeded; width: 50%; height: 50%; margin: auto;" align="center">
+    <br>
+    <form asp-controller="Home" asp-action="Index">
+        <button type="submit" class="btn btn-light">Create Sale</button>
+    </form>
+    <br>
+    <form asp-controller="Home" asp-action="Index">
+        <button type="submit" class="btn btn-light">Create Competition</button>
+    </form>
+    <br>
+    <form asp-controller="Home" asp-action="Index">
+        <button type="submit" class="btn btn-light">Create Developer</button>
+    </form>
+    <br>
+    <form asp-controller="Home" asp-action="Index">
+        <button type="submit" class="btn btn-light">Create Administrator</button>
+    </form>
+    <br>
+    <form asp-controller="Home" asp-action="Index">
+        <button type="submit" class="btn btn-light">Edit Profile</button>
+    </form>
+    <br>
+    <form asp-controller="Home" asp-action="Index">
+        <button type="submit" class="btn btn-light">Statistic</button>
+    </form>
+    <br>
+</div>
