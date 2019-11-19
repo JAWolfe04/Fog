@@ -9,7 +9,7 @@ namespace DataLibrary.Models
         public int GameID { get; set; }
         public string Title { get; set; }
         public string Desc { get; set; }
-        public int price { get; set; }
+        public double price { get; set; }
         public string Genre { get; set; }
     }
 }

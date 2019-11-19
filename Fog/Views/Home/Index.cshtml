@@ -3,23 +3,66 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+<div id="carouselMarketplace" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carouselMarketplace" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselMarketplace" data-slide-to="1"></li>
+        <li data-target="#carouselMarketplace" data-slide-to="2"></li>
+        <li data-target="#carouselMarketplace" data-slide-to="3"></li>
+        <li data-target="#carouselMarketplace" data-slide-to="4"></li>
+    </ol>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="~/Images/Games.jpg" class="d-block w-100" alt="Games Image">
+            <a href="/Marketplace/Games">
+                <img src="~/Images/Games2.jpg" class="d-block w-100" alt="Games Image">
+            </a>
+            <div class="carousel-caption d-none d-md-block">
+                <h2>Games</h2>
+                <p>Find games in the Game Marketplace.</p>
+            </div>
         </div>
         <div class="carousel-item">
-            <img src="~/Images/Competition.jpg" class="d-block w-100" alt="Competition Image">
+            <a href="/Marketplace/Competitions">
+                <img src="~/Images/Competition2.jpg" class="d-block w-100" alt="Competitions Image">
+            </a>
+            <div class="carousel-caption d-none d-md-block">
+                <h2>Competitions</h2>
+                <p>Learn about upcoming competitions in the Competition Forum.</p>
+            </div>
         </div>
         <div class="carousel-item">
-            <img src="~/Images/Streams.jpg" class="d-block w-100" alt="Streams Image">
+            <a href="/Marketplace/Streams">
+                <img src="~/Images/Streams2.jpg" class="d-block w-100" alt="Streams Image">
+            </a>
+            <div class="carousel-caption d-none d-md-block">
+                <h2>Streams</h2>
+                <p>Find streams of your favorite games in the Stream Theater.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <a href="/Marketplace/Players">
+                <img src="~/Images/Players.jpg" class="d-block w-100" alt="Players Image">
+            </a>
+            <div class="carousel-caption d-none d-md-block">
+                <h2>Players</h2>
+                <p>Find other players through the Player Lounge.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <a href="/Marketplace/Developers">
+                <img src="~/Images/Developers2.jpg" class="d-block w-100" alt="Developers Image">
+            </a>
+            <div class="carousel-caption d-none d-md-block">
+                <h2>Developers</h2>
+                <p>Learn about developers in the Developer Lounge.</p>
+            </div>
         </div>
     </div>
-    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <a class="carousel-control-prev" href="#carouselMarketplace" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
     </a>
-    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <a class="carousel-control-next" href="#carouselMarketplace" role="button" data-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
