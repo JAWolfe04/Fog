@@ -1,0 +1,28 @@
+﻿@model IEnumerable<DataLibrary.Models.StreamModel>
+
+@{
+    ViewData["Title"] = "Stream Theater";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.ActionLink("Index", "StreamInfo", new { id = item.StreamID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

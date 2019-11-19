@@ -24,6 +24,16 @@ namespace Fog.Controllers
             return View(homeModel);
         }
 
+        public IActionResult DevHome()
+        {
+            return View();
+        }
+
+        public IActionResult AdminHome()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

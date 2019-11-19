@@ -1,0 +1,37 @@
+﻿@model IEnumerable<DataLibrary.Models.GameModel>
+
+@{
+    ViewData["Title"] = "Game Marketplace";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Genre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.price)
+            </td>
+            <td>
+                @Html.ActionLink("Info", "GameInfo", new { id = item.GameID })
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
