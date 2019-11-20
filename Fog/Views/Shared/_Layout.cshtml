@@ -51,8 +51,17 @@
                                 <a class="nav-link text-light" asp-controller="Home" asp-action="Index">Home</a>
                             }
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="Marketplace" asp-action="Games">Marketplace</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false" id="marketplaceDropdown"
+                               asp-controller="Marketplace" asp-action="Games">Marketplace</a>
+                            <div class="dropdown-menu" aria-labelledby="marketplaceDropdown">
+                                <a class="dropdown-item" href="/Marketplace/Games">Games</a>
+                                <a class="dropdown-item" href="/Marketplace/Players">Players</a>
+                                <a class="dropdown-item" href="/Marketplace/Streams">Streams</a>
+                                <a class="dropdown-item" href="/Marketplace/Competitions">Competitions</a>
+                                <a class="dropdown-item" href="/Marketplace/Developers">Developers</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -73,8 +82,9 @@
                     else
                     {
                         <form asp-controller="Login" asp-action="Logout">
-                            <div class="form-group float-right text-light" style="margin: 0 auto">
-                                @Context.Session.GetString("DisplayName")
+                            <div class="form-group float-right" style="margin: 0 auto">
+                                <span class="pr-sm-3 text-light align-middle">
+                                @Context.Session.GetString("DisplayName")</span>
                                 <button type="submit" class="btn btn-light">Logoff</button>
                             </div>
                         </form>
