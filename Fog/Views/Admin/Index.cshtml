@@ -1,0 +1,31 @@
+﻿
+@using Microsoft.AspNetCore.Http;
+
+
+@{
+    ViewData["Title"] = "Admin Page";
+}
+
+<h1 align="center">@Context.Session.GetString("DisplayName")</h1>
+
+
+
+<form>
+    <br><br>
+
+    <div style="background-color: #ffffff; width: 50%; height: 50%; margin: auto;" align="center" >
+
+        <button type="submit" class="btn btn-dark btn-block" style="border-color: #808080;" asp-controller="Admin" asp-action="CreateSale">Create Sale</button>
+        <br>
+        <button type="submit" class="btn btn-dark btn-block" style="border-color: #808080;" asp-controller="Admin" asp-action="CreateCompetition">Create Competition</button>
+        <br>
+        <button type="submit" class="btn btn-dark btn-block" style="border-color: #808080;" asp-controller="Login" asp-action="CreateDev">Create Developer</button>
+        <br>
+        <button type="submit" class="btn btn-dark btn-block" style="border-color: #808080;" asp-controller="Login" asp-action="CreateAdmin">Create Administrator</button>
+        <br>
+        <button type="submit" class="btn btn-dark btn-block" style="border-color: #808080;" asp-controller="Home" asp-action="Index">Edit Profile</button>
+        <br>
+        <button type="submit" class="btn btn-dark btn-block" style="border-color: #808080;" asp-controller="Home" asp-action="Index">Statistic</button>
+
+    </div>
+</form>

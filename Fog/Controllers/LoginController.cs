@@ -16,7 +16,7 @@ namespace Fog.Controllers
         [HttpPost]
         public IActionResult Login(LoginModel login)
         {
-            PlayerModel player = new PlayerModel();
+            DataLibrary.Models.PlayerModel player = new DataLibrary.Models.PlayerModel();
             player.Username = login.Username;
             player.Password = login.Password;
             if (SQLDataAccess.VerifyPlayer(player))
@@ -28,7 +28,7 @@ namespace Fog.Controllers
                 switch (player.Permission)
                 {
                     case 0:
-                        return RedirectToAction("PlayerHome", "Home");
+                        return RedirectToAction("Index", "Admin");
                     case 1:
                         return RedirectToAction("DevHome", "Home");
                     case 2:

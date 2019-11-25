@@ -5,9 +5,10 @@ namespace Fog.Models
 {
     public class PlayerHomeModel
     {
-        public List<GameModel> PurchasedGames { get; set; }
-        public List<PlayerModel> Friends { get; set; }
-        public List<StreamModel> FollowedStreams { get; set; }
-        public List<GameModel> Wishlist { get; set; }
+        public IEnumerable<GameModel> PurchasedGames { get; set; }
+        public IEnumerable<DataLibrary.Models.PlayerModel> Friends { get; set; }
+        public IEnumerable<StreamModel> FollowedStreams { get; set; }
+        public IEnumerable<GameModel> Wishlist { get; set; }
+
     }
 }
