@@ -28,7 +28,7 @@ namespace Fog.Controllers
                 switch (player.Permission)
                 {
                     case 0:
-                        return RedirectToAction("PlayerHome", "Home");
+                        return RedirectToAction("Index", "Admin");
                     case 1:
                         return RedirectToAction("DevHome", "Home");
                     case 2:

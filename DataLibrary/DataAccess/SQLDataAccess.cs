@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using System;
 using System.Data;
+using Fog.Models;
 
 namespace DataLibrary.DataAccess
 {
@@ -154,6 +155,94 @@ namespace DataLibrary.DataAccess
             }
 
             return connected;
+        }
+
+        public static bool IsGameExist(string gameName)
+        {
+            bool gameExists = false;
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_GameTitle", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@game_title", gameName);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    gameExists = true;
+                }
+                return gameExists;
+            }
+        }
+
+        public static int getGameID(string gameName)
+        {
+            int gameID = 0;
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_GameTitle", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@game_title", gameName);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    gameID = Convert.ToInt32(rdr["GameID"]);
+                }
+               
+            }
+            return gameID;
+        }
+
+        public static bool CreateCompetition(CompetitionModel competition)
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+                {
+                    MySqlCommand cmd = new MySqlCommand("create_Competition", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@compDate", competition.Date);
+                    cmd.Parameters.AddWithValue("@compName", competition.Title);
+                    cmd.Parameters.AddWithValue("@compDesc", competition.Description);
+                    cmd.Parameters.AddWithValue("@compGameID", getGameID(competition.Game));
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                //return false;
+            }
+            //return false;
+        }
+
+        public static bool CreateSale(SaleModel sale)
+        {
+            //SalePercent int(11)
+            //SaleDate datetime
+            //SaleGameID int(11)
+
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+                {
+                    MySqlCommand cmd = new MySqlCommand("create_Sale", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SalePercent", sale.SalePercent);
+                    cmd.Parameters.AddWithValue("@SaleDate", sale.SaleDate);
+                    cmd.Parameters.AddWithValue("@SaleGameID", getGameID(sale.SaleGame));
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
