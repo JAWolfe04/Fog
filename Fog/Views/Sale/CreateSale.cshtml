@@ -1,40 +1,25 @@
 ﻿@model Fog.Models.SaleModel
-
 @{
     ViewData["Title"] = "Create Sale";
 }
 
-<h1>CreateSale</h1>
+<h1>@ViewData["Title"]</h1>
 
-@if (TempData["Success"] != null)
-{
-    <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
-}
-@if (TempData["Danger"] != null)
-{
-    <p class="alert alert-danger" id="dangerMessage">@TempData["Danger"]</p>
-}
-
-<hr />
-
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateSale">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="SalePercent" class="control-label"></label>
                 <input asp-for="SalePercent" class="form-control" />
-                <span asp-validation-for="SalePercent" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SaleDate" class="control-label"></label>
                 <input asp-for="SaleDate" class="form-control" />
-                <span asp-validation-for="SaleDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SaleGame" class="control-label"></label>
                 <input asp-for="SaleGame" class="form-control" />
-                <span asp-validation-for="SaleGame" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -42,8 +27,3 @@
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
