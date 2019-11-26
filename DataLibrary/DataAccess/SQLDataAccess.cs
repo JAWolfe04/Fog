@@ -128,6 +128,23 @@ namespace DataLibrary.DataAccess
         {
             List<PlayerModel> players = new List<PlayerModel>();
 
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_Players", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    PlayerModel player = new PlayerModel();
+                    player.Username = rdr["PlayerUsername"].ToString();
+                    player.DisplayName = rdr["PlayerDisplayName"].ToString();
+                    players.Add(player);
+                }
+                conn.Close();
+            }
+
             return players;
         }
 
@@ -162,7 +179,78 @@ namespace DataLibrary.DataAccess
         {
             List<StreamModel> streams = new List<StreamModel>();
 
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_Streams", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    StreamModel stream = new StreamModel();
+                    stream.StreamID = Convert.ToInt32(rdr["StreamID"]);
+                    stream.Title = rdr["StreamTitle"].ToString();
+                    stream.Link = rdr["StreamLink"].ToString();
+                    stream.GameID = Convert.ToInt32(rdr["GameID"]);
+                    stream.GameTitle = rdr["GameTitle"].ToString();
+                    streams.Add(stream);
+                }
+                conn.Close();
+            }
+
             return streams;
+        }
+
+        public static List<DeveloperModel> GetDevelopers()
+        {
+            List<DeveloperModel> developers = new List<DeveloperModel>();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_Developers", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    DeveloperModel developer = new DeveloperModel();
+                    developer.ID = Convert.ToInt32(rdr["DevID"]);
+                    developer.Name = rdr["DevName"].ToString();
+                    developers.Add(developer);
+                }
+                conn.Close();
+            }
+
+            return developers;
+        }
+
+        public static List<CompetitionModel> GetCompetitions()
+        {
+            List<CompetitionModel> competitions = new List<CompetitionModel>();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_Competitions", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    CompetitionModel competition = new CompetitionModel();
+                    competition.CompID = Convert.ToInt32(rdr["CompID"]);
+                    competition.Date = Convert.ToDateTime(rdr["CompDate"]);
+                    competition.Title = rdr["CompName"].ToString();
+                    competition.GameID = Convert.ToInt32(rdr["GameID"]);
+                    competition.GameTitle = rdr["GameTitle"].ToString();
+                    competitions.Add(competition);
+                }
+                conn.Close();
+            }
+
+            return competitions;
         }
 
         public static PlayerModel GetPlayerInfo(string Username)
@@ -223,7 +311,7 @@ namespace DataLibrary.DataAccess
             }
         }
 
-            public static void DeletePlayer(string Username)
+        public static void DeletePlayer(string Username)
         {
             using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
             {
