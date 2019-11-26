@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Fog.Models;
-using DataLibrary.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace Fog.Controllers
@@ -37,7 +36,10 @@ namespace Fog.Controllers
                 }
             }
             else
-                return View();
+            {
+                ModelState.AddModelError("ModelOnly", "Username/Password combination was incorrect.");
+                return View("Index", login);
+            }
         }
 
         public IActionResult CreatePlayer()
@@ -48,24 +50,64 @@ namespace Fog.Controllers
         [HttpPost]
         public IActionResult CreatePlayer(PlayerModel player)
         {
-            if(DataLibrary.DataAccess.SQLDataAccess.CreatePlayer(player))
+            if(ModelState.IsValid)
             {
-                HttpContext.Session.SetString("DisplayName", player.DisplayName);
-                HttpContext.Session.SetString("Username", player.Username);
-                HttpContext.Session.SetInt32("Permission", 0);
+                if(DataLibrary.DataAccess.SQLDataAccess.GetPlayerInfo(player.Username).Username != "")
+                {
+                    ModelState.AddModelError("Username", 
+                        "The entered username already exists. Please enter a different username.");
+                }
+                else
+                {
+                    DataLibrary.Models.PlayerModel playerData = new DataLibrary.Models.PlayerModel();
+                    playerData.DisplayName = player.DisplayName;
+                    playerData.Email = player.Email;
+                    playerData.Password = player.Password;
+                    playerData.Username = player.Username;
 
-                return RedirectToAction("PlayerHome", "Home");
+                    DataLibrary.DataAccess.SQLDataAccess.CreatePlayer(playerData);
+                    HttpContext.Session.SetString("DisplayName", player.DisplayName);
+                    HttpContext.Session.SetString("Username", player.Username);
+                    HttpContext.Session.SetInt32("Permission", 0);
+
+                    return RedirectToAction("PlayerHome", "Home");
+                }
             }
-            else
-                return View();
+
+            return View(player);
         }
 
-        public IActionResult RemovePlayer()
+        public IActionResult EditPlayer()
+        {
+            PlayerModel player = new PlayerModel();
+            DataLibrary.Models.PlayerModel playerData = DataLibrary.DataAccess.SQLDataAccess.GetPlayerInfo(
+                HttpContext.Session.GetString("Username"));
+            player.Username = playerData.Username;
+            player.DisplayName = playerData.DisplayName;
+            player.Password = playerData.Password;
+            player.Email = playerData.Email;
+            return View(player);
+        }
+
+        [HttpPost]
+        public IActionResult EditPlayer(PlayerModel player)
+        {
+            DataLibrary.Models.PlayerModel playerData = new DataLibrary.Models.PlayerModel();
+            playerData.Username = HttpContext.Session.GetString("Username");
+            playerData.DisplayName = player.DisplayName;
+            HttpContext.Session.SetString("DisplayName", player.DisplayName);
+            playerData.Password = player.Password;
+            playerData.Email = player.Email;
+            DataLibrary.DataAccess.SQLDataAccess.EditPlayer(playerData);
+            return RedirectToAction("PlayerHome","Home");
+        }
+
+            public IActionResult RemovePlayer()
         {
             DataLibrary.DataAccess.SQLDataAccess.DeletePlayer(HttpContext.Session.GetString("Username"));
 
             if (HttpContext.Session.GetInt32("Permission") == 2)
-                return View();
+                return RedirectToAction("Players", "Marketplace");
             else
                 return Logout();
         }
