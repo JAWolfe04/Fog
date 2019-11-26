@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Fog.Models;
-using DataLibrary.DataAccess;
 using DataLibrary.Models;
 using Microsoft.AspNetCore.Http;
 
@@ -19,7 +18,7 @@ namespace Fog.Controllers
             DataLibrary.Models.PlayerModel player = new DataLibrary.Models.PlayerModel();
             player.Username = login.Username;
             player.Password = login.Password;
-            if (SQLDataAccess.VerifyPlayer(player))
+            if (DataLibrary.DataAccess.SQLDataAccess.VerifyPlayer(player))
             {
                 HttpContext.Session.SetString("DisplayName", player.DisplayName);
                 HttpContext.Session.SetString("Username", player.Username);
@@ -28,7 +27,7 @@ namespace Fog.Controllers
                 switch (player.Permission)
                 {
                     case 0:
-                        return RedirectToAction("Index", "Admin");
+                        return RedirectToAction("PlayerHome", "Home");
                     case 1:
                         return RedirectToAction("DevHome", "Home");
                     case 2:
@@ -49,7 +48,7 @@ namespace Fog.Controllers
         [HttpPost]
         public IActionResult CreatePlayer(PlayerModel player)
         {
-            if(SQLDataAccess.CreatePlayer(player))
+            if(DataLibrary.DataAccess.SQLDataAccess.CreatePlayer(player))
             {
                 HttpContext.Session.SetString("DisplayName", player.DisplayName);
                 HttpContext.Session.SetString("Username", player.Username);
@@ -63,7 +62,7 @@ namespace Fog.Controllers
 
         public IActionResult RemovePlayer()
         {
-            SQLDataAccess.DeletePlayer(HttpContext.Session.GetString("Username"));
+            DataLibrary.DataAccess.SQLDataAccess.DeletePlayer(HttpContext.Session.GetString("Username"));
 
             if (HttpContext.Session.GetInt32("Permission") == 2)
                 return View();
