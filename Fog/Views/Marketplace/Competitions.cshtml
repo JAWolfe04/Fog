@@ -1,7 +1,35 @@
-﻿
+﻿@model IEnumerable<DataLibrary.Models.CompetitionModel>
 @{
-    ViewData["Title"] = "Competitions";
+    ViewData["Title"] = "Competition Forum";
 }
 
-<h1>Competitions</h1>
+    <h1>@ViewData["Title"]</h1>
 
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Competition Name</th>
+                <th>Game Title</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GameTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.ActionLink("Info", "Index", "CompetitionInfo", new { id = item.CompID })
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>

@@ -19,11 +19,11 @@ namespace Fog.Controllers
         }
         public IActionResult Competitions()
         {
-            return View();
+            return View(SQLDataAccess.GetCompetitions());
         }
         public IActionResult Developers()
         {
-            return View();
+            return View(SQLDataAccess.GetDevelopers());
         }
         public IActionResult Streams()
         {

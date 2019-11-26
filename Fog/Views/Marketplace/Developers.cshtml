@@ -1,7 +1,27 @@
-﻿
+﻿@model IEnumerable<DataLibrary.Models.DeveloperModel>
 @{
-    ViewData["Title"] = "Developers";
+    ViewData["Title"] = "Developer Lounge";
 }
 
-<h1>Developers</h1>
+<h1>@ViewData["Title"]</h1>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>Developer Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Info", "Index", "DeveloperInfo", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
