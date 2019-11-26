@@ -21,6 +21,7 @@ namespace Fog.Controllers
             homeModel.Friends = SQLDataAccess.GetFriends(Username);
             homeModel.FollowedStreams = SQLDataAccess.GetFollowedStreams(Username);
             homeModel.Wishlist = SQLDataAccess.GetWishlist(Username);
+            homeModel.PlayerInfo = SQLDataAccess.GetPlayerInfo(Username);
             return View(homeModel);
         }
 

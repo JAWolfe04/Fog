@@ -34,9 +34,22 @@
             </table>
         </div>
         <div class="col-3">
-            <button type="button" class="btn btn-dark btn-block">Edit Profile</button>
-            <button type="button" class="btn btn-dark btn-block">Create/View Stream</button>
-            <button type="button" class="btn btn-dark btn-block" asp-controller="Login" asp-action="RemovePlayer">Remove Account</button>
+            <button type="button" class="btn btn-dark btn-block"
+                    onclick="location.href='@Url.Action("EditPlayer", "Login")'">
+                Edit Profile
+            </button>
+            @if (Model.PlayerInfo.StreamID == 0)
+            {
+                <button type="button" class="btn btn-dark btn-block">Create Stream</button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-dark btn-block">Edit Stream</button>
+            }
+            <button type="button" class="btn btn-dark btn-block" data-toggle="modal"
+                    data-target="#RemovePlayerModal">
+                Remove Account
+            </button>
         </div>
     </div>
 
@@ -51,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (PlayerModel friend in Model.Friends.Take(5))
+                    @foreach (DataLibrary.Models.PlayerModel friend in Model.Friends.Take(5))
                     {
                         <tr>
                             <td>@friend.DisplayName</td>
@@ -118,6 +131,29 @@
                     }
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="RemovePlayerModal" tabindex="-1" role="dialog" 
+     aria-labelledby="removeAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="removeAccountModalLabel">Remove Account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Are you sure you want to remove this account?</p>
+                <p>This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep Account</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        onclick="location.href='@Url.Action("RemovePlayer", "Login")'">Remove Account</button>
+            </div>
         </div>
     </div>
 </div>

@@ -165,14 +165,13 @@ namespace DataLibrary.DataAccess
             return streams;
         }
 
-        public static string GetPlayerName(string Username)
+        public static PlayerModel GetPlayerInfo(string Username)
         {
-            string displayName = "";
+            PlayerModel player = new PlayerModel();
 
             using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
             {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("get_DisplayName", conn);
+                MySqlCommand cmd = new MySqlCommand("get_PlayerInfo", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@user_name", Username);
 
@@ -180,22 +179,61 @@ namespace DataLibrary.DataAccess
                 MySqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
-                    displayName = rdr["PlayerDisplayName"].ToString();
+                    player.Username = rdr["PlayerUsername"].ToString();
+                    player.DisplayName = rdr["PlayerDisplayName"].ToString();
+                    player.Email = rdr["PlayerEmail"].ToString();
+                    player.Password = rdr["PlayerPassword"].ToString();
+                    player.StreamID = Convert.ToInt32(rdr["StreamID"]);
                 }
                 conn.Close();
             }
 
-            return displayName;
+            return player;
         }
 
-        public static bool CreatePlayer(PlayerModel player)
+        public static void CreatePlayer(PlayerModel player)
         {
-            return true;
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("create_Player", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@user_name", player.Username);
+                cmd.Parameters.AddWithValue("@play_password", player.Password);
+                cmd.Parameters.AddWithValue("@display_name", player.DisplayName);
+                cmd.Parameters.AddWithValue("@email", player.Email);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
         }
 
-        public static void DeletePlayer(string Username)
+        public static void EditPlayer(PlayerModel player)
         {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("update_Player", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@user_name", player.Username);
+                cmd.Parameters.AddWithValue("@play_password", player.Password);
+                cmd.Parameters.AddWithValue("@display_name", player.DisplayName);
+                cmd.Parameters.AddWithValue("@email", player.Email);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
 
+            public static void DeletePlayer(string Username)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("remove_Account", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@user_name", Username);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
         }
 
         public static bool VerifyPlayer(PlayerModel player)
