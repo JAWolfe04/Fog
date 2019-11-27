@@ -52,7 +52,7 @@ namespace Fog.Controllers
         {
             if(ModelState.IsValid)
             {
-                if(DataLibrary.DataAccess.SQLDataAccess.GetPlayerInfo(player.Username).Username != "")
+                if(DataLibrary.DataAccess.SQLDataAccess.GetPlayerInfo(player.Username).Username == player.Username)
                 {
                     ModelState.AddModelError("Username", 
                         "The entered username already exists. Please enter a different username.");

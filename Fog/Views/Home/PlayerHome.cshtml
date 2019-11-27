@@ -40,11 +40,17 @@
             </button>
             @if (Model.PlayerInfo.StreamID == 0)
             {
-                <button type="button" class="btn btn-dark btn-block">Create Stream</button>
+                <button type="button" class="btn btn-dark btn-block" 
+                        onclick="location.href='@Url.Action("CreateStream", "Stream")'">
+                    Create Stream
+                </button>
             }
             else
             {
-                <button type="button" class="btn btn-dark btn-block">Edit Stream</button>
+                <button type="button" class="btn btn-dark btn-block"
+                        onclick="location.href='@Url.Action("StreamInfo", "Stream", new { StreamID = 0 }))'">
+                    View Stream Page
+                </button>
             }
             <button type="button" class="btn btn-dark btn-block" data-toggle="modal"
                     data-target="#RemovePlayerModal">
@@ -90,13 +96,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (StreamModel stream in Model.FollowedStreams.Take(5))
+                    @foreach (DataLibrary.Models.StreamModel stream in Model.FollowedStreams.Take(5))
                     {
                         <tr>
                             <td>@stream.Title</td>
                             <td>@stream.Link</td>
                             <td>
-                                @Html.ActionLink("View", "View", new { id = stream.StreamID })
+                                @Html.ActionLink("View","StreamInfo", "Stream", new { id = stream.StreamID })
                             </td>
                         </tr>
                     }
