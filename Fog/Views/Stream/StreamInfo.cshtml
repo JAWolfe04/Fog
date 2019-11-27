@@ -1,0 +1,65 @@
+﻿@model Fog.Models.StreamInfoModelView
+
+@{
+    ViewData["Title"] = "Stream Theater";
+}
+
+<h1 class="text-center">@Model.stream.Title</h1>
+
+<h4 class="text-center pt-2">Game: @Model.game.Title</h4>
+
+<h4 class="text-center pt-2">Hosted By:</h4>
+<table class="table table-responsive-sm table-hover mx-auto w-50">
+    <thead>
+        <tr>
+            <th>Players</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DataLibrary.Models.PlayerModel player in Model.players)
+        {
+            <tr>
+                <td>@player.DisplayName</td>
+                <td class="text-center">
+                    @Html.ActionLink("View", "View", new { id = player.Username })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Model.stream.Link" class="btn btn-dark btn-block mx-auto w-50" role="button">Go To Stream</a>
+@if (Model.IsHost)
+{
+    <button type="button" class="btn btn-dark btn-block mx-auto w-50"
+            onclick="location.href='@Url.Action("EditStream", "Stream", new { StreamID = Model.stream.StreamID })'">
+        Edit Stream
+    </button>
+    <button type="button" class="btn btn-dark btn-block mx-auto w-50"
+            onclick="location.href='@Url.Action("LeaveStream", "Stream", new { StreamID = Model.stream.StreamID })'">
+        Leave Stream
+    </button>
+}
+
+@if (Model.IsFollower)
+{
+    <button type="button" class="btn btn-dark btn-block mx-auto w-50"
+            onclick="location.href='@Url.Action("UnfollowStream", "Stream", new { StreamID = Model.stream.StreamID })'">
+        Unfollow Stream
+    </button>
+}
+else
+{
+    <button type="button" class="btn btn-dark btn-block mx-auto w-50"
+            onclick="location.href='@Url.Action("FollowStream", "Stream", new { StreamID = Model.stream.StreamID })'">
+        Follow Stream
+    </button>
+}
+
+@if (!Model.IsHost)
+{
+    <button type="button" class="btn btn-dark btn-block mx-auto w-50"
+            onclick="location.href='@Url.Action("JoinStream", "Stream", new { StreamID = Model.stream.StreamID })'">
+        Join Stream
+    </button>
+}

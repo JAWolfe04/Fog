@@ -398,5 +398,244 @@ namespace DataLibrary.DataAccess
                 conn.Close();
             }
         }
+
+        public static int CreateStream(StreamModel stream)
+        {
+            int streamID = 0;
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("create_Stream", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@streamLink", stream.Link);
+                cmd.Parameters.AddWithValue("@streamTitle", stream.Title);
+                cmd.Parameters.AddWithValue("@gameID", stream.GameID);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    streamID = Convert.ToInt32(rdr["StreamID"]);
+                }
+                conn.Close();
+            }
+
+            return streamID;
+        }
+
+        public static void HostStream(string Username, int StreamID)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("host_Stream", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Username", Username);
+                cmd.Parameters.AddWithValue("@StreamID", StreamID);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static StreamModel GetStreamInfo(int StreamID)
+        {
+            StreamModel stream = new StreamModel();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_StreamInfo", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StreamID", StreamID);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    stream.StreamID = Convert.ToInt32(rdr["StreamID"]);
+                    stream.GameID = Convert.ToInt32(rdr["GameID"]);
+                    stream.Title = rdr["StreamTitle"].ToString();
+                    stream.Link = rdr["StreamLink"].ToString();
+                }
+                conn.Close();
+            }
+
+            return stream;
+        }
+
+        public static List<PlayerModel> GetStreamHosts(int StreamID)
+        {
+            List<PlayerModel> hosts = new List<PlayerModel>();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_StreamHosts", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StreamID", StreamID);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    PlayerModel host = new PlayerModel();
+                    host.Username = rdr["PlayerUsername"].ToString();
+                    host.DisplayName = rdr["PlayerDisplayName"].ToString();
+                    hosts.Add(host);
+                }
+                conn.Close();
+            }
+
+            return hosts;
+        }
+
+        public static GameModel GetGameInfo(int GameID)
+        {
+            GameModel gameInfo = new GameModel();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_GameInfo", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ID", GameID);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    gameInfo.GameID = Convert.ToInt32(rdr["GameID"]);
+                    gameInfo.Title = rdr["GameTitle"].ToString();
+                    gameInfo.Genre = rdr["GameGenre"].ToString();
+                    gameInfo.Desc = rdr["GameDesc"].ToString();
+                    gameInfo.price = Convert.ToDouble(rdr["GamePrice"]);
+                }
+                conn.Close();
+            }
+
+            return gameInfo;
+        }
+
+        public static bool IsStreamHost(int StreamID, string Username)
+        {
+            int relation = 0;
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("is_StreamHost", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StreamID", StreamID);
+                cmd.Parameters.AddWithValue("@Username", Username);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    relation = Convert.ToInt32(rdr["Hosts"]);
+                }
+                conn.Close();
+            }
+
+            return relation == 1;
+        }
+
+        public static bool IsStreamFollower(int StreamID, string Username)
+        {
+            int relation = 0;
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("is_StreamFollower", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StreamID", StreamID);
+                cmd.Parameters.AddWithValue("@Username", Username);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    relation = Convert.ToInt32(rdr["Follower"]);
+                }
+                conn.Close();
+            }
+
+            return relation == 1;
+        }
+
+
+        public static void JoinStream(int StreamID, string Username)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("join_Stream", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StreamID", StreamID);
+                cmd.Parameters.AddWithValue("@Username", Username);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static void LeaveStream(int StreamID, string Username)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("leave_Stream", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StreamID", StreamID);
+                cmd.Parameters.AddWithValue("@Username", Username);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static void FollowStream(int StreamID, string Username)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("follow_Stream", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StreamID", StreamID);
+                cmd.Parameters.AddWithValue("@Username", Username);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+        public static void UnfollowStream(int StreamID, string Username)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("unfollow_Stream", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StreamID", StreamID);
+                cmd.Parameters.AddWithValue("@Username", Username);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static void RemoveStream(int StreamID)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("remove_Stream", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StreamID", StreamID);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static void EditStream(StreamModel stream)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("update_Stream", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StreamID", stream.StreamID);
+                cmd.Parameters.AddWithValue("@Link", stream.Link);
+                cmd.Parameters.AddWithValue("@Title", stream.Title);
+                cmd.Parameters.AddWithValue("@GameID", stream.GameID);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
     }
 }
