@@ -279,6 +279,56 @@ namespace DataLibrary.DataAccess
             return player;
         }
 
+        public static bool IsFriend(string playerUsername, string friendUsername)
+        {
+            int isFriend = 0;
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("is_Friend", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@playerUsername", playerUsername);
+                cmd.Parameters.AddWithValue("@friendUsername", friendUsername);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    isFriend = Convert.ToInt32(rdr["Friends"]);
+                }
+                conn.Close();
+            }
+
+            return isFriend == 1;
+        }
+
+        public static void AddFriend(string PlayerUsername, string FriendUsername)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("add_Friend", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@playerUsername", PlayerUsername);
+                cmd.Parameters.AddWithValue("@friendUsername", FriendUsername);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static void RemoveFriend(string PlayerUsername, string FriendUsername)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("remove_Friend", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@playerUsername", PlayerUsername);
+                cmd.Parameters.AddWithValue("@friendUsername", FriendUsername);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
         public static void CreatePlayer(PlayerModel player)
         {
             using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
@@ -552,7 +602,6 @@ namespace DataLibrary.DataAccess
 
             return relation == 1;
         }
-
 
         public static void JoinStream(int StreamID, string Username)
         {

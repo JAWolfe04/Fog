@@ -21,7 +21,7 @@
             <tr>
                 <td>@player.DisplayName</td>
                 <td class="text-center">
-                    @Html.ActionLink("View", "View", new { id = player.Username })
+                    @Html.ActionLink("View", "PlayerInfo", "Home", new { playerUsername = player.Username })
                 </td>
             </tr>
         }

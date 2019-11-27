@@ -9,17 +9,26 @@ namespace Fog.Controllers
     {
         public IActionResult StreamInfo(int StreamID)
         {
-            string Username = HttpContext.Session.GetString("Username");
-
-            if (StreamID == 0)
-                StreamID = DataLibrary.DataAccess.SQLDataAccess.GetPlayerInfo(Username).StreamID;
-
             StreamInfoModelView streamInfo = new StreamInfoModelView();
+
+            if (HttpContext.Session.Get("Username") != null)
+            {
+                string Username = HttpContext.Session.GetString("Username");
+
+                if (StreamID == 0)
+                    StreamID = DataLibrary.DataAccess.SQLDataAccess.GetPlayerInfo(Username).StreamID;;
+                streamInfo.IsHost = DataLibrary.DataAccess.SQLDataAccess.IsStreamHost(StreamID, Username);
+                streamInfo.IsFollower = DataLibrary.DataAccess.SQLDataAccess.IsStreamFollower(StreamID, Username); ;
+            }
+            else
+            {
+                streamInfo.IsHost = false;
+                streamInfo.IsFollower = false;
+            }
+
             streamInfo.stream = DataLibrary.DataAccess.SQLDataAccess.GetStreamInfo(StreamID);
             streamInfo.game = DataLibrary.DataAccess.SQLDataAccess.GetGameInfo(streamInfo.stream.GameID);
             streamInfo.players = DataLibrary.DataAccess.SQLDataAccess.GetStreamHosts(StreamID);
-            streamInfo.IsHost = DataLibrary.DataAccess.SQLDataAccess.IsStreamHost(StreamID, Username);
-            streamInfo.IsFollower = DataLibrary.DataAccess.SQLDataAccess.IsStreamFollower(StreamID, Username); ;
 
             return View(streamInfo);
         }
