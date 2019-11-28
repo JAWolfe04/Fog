@@ -21,13 +21,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (GameModel game in Model.PurchasedGames.Take(5))
+                    @foreach (DataLibrary.Models.GameModel game in Model.PurchasedGames.Take(5))
                     {
                         <tr>
                             <td>@game.Title</td>
                             <td>@game.Genre</td>
                             <td>
-                                @Html.ActionLink("View", "View", new { id = game.GameID })
+                                @Html.ActionLink("View", "GameInfo", "Marketplace", new { GameID = game.GameID })
                             </td>
                         </tr>
                     }
@@ -88,7 +88,7 @@
                         <tr>
                             <td>@friend.DisplayName</td>
                             <td>
-                                @Html.ActionLink("View", "PlayerInfo", "Home", new { id = friend.Username })
+                                @Html.ActionLink("View", "PlayerInfo", "Home", new { playerUsername = friend.Username })
                             </td>
                         </tr>
                     }
@@ -115,7 +115,7 @@
                             <td>@stream.Title</td>
                             <td>@stream.Link</td>
                             <td>
-                                @Html.ActionLink("View", "StreamInfo", "Stream", new { id = stream.StreamID })
+                                @Html.ActionLink("View", "StreamInfo", "Stream", new { StreamID = stream.StreamID })
                             </td>
                         </tr>
                     }
@@ -137,14 +137,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (GameModel game in Model.Wishlist.Take(5))
+                    @foreach (DataLibrary.Models.GameModel game in Model.Wishlist.Take(5))
                     {
                         <tr>
                             <td>@game.Title</td>
                             <td>@game.Genre</td>
                             <td>@game.price</td>
                             <td>
-                                @Html.ActionLink("View", "View", new { id = game.GameID })
+                                @Html.ActionLink("View", "GameInfo", "Marketplace", new { GameID = game.GameID })
                             </td>
                         </tr>
                     }

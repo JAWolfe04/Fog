@@ -26,7 +26,7 @@
                             <td>@game.Title</td>
                             <td>@game.Genre</td>
                             <td>
-                                @Html.ActionLink("View", "View", new { id = game.GameID })
+                                @Html.ActionLink("View", "GameInfo", "Marketplace", new { GameID = game.GameID })
                             </td>
                         </tr>
                     }
@@ -131,7 +131,7 @@
                             <td>@game.Genre</td>
                             <td>@game.price</td>
                             <td>
-                                @Html.ActionLink("View", "View", new { id = game.GameID })
+                                @Html.ActionLink("View", "GameInfo", "Marketplace", new { GameID = game.GameID })
                             </td>
                         </tr>
                     }
