@@ -29,7 +29,7 @@
                 @Html.DisplayFor(modelItem => item.price)
             </td>
             <td>
-                @Html.ActionLink("Info", "GameInfo", new { id = item.GameID })
+                @Html.ActionLink("Info", "GameInfo", new { GameID = item.GameID })
             </td>
         </tr>
         }

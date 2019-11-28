@@ -1,0 +1,159 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model Fog.Models.GameInfoModel
+
+@{
+    ViewData["Title"] = "Game Info";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <h1>@Model.game.Title</h1>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 mr-4">
+            <div class="row pb-4">
+                <textarea rows="8" style="min-width: 100%; resize:none" readonly>@Model.game.Desc</textarea>
+            </div>
+            <div class="row bg-light mb-4">
+                <div class="col ml-2">
+                    <div class="row mt-2">
+                        Price:
+                    </div>
+                    <div class="row mt-1">
+                        Sale:
+                    </div>
+                    <div class="row mt-1">
+                        Total:
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row justify-content-center mt-2">
+                        <text>$ @Model.game.price</text>
+                    </div>
+                    <div class="row justify-content-center mt-1">
+                        <text>@Model.sale.SalePercent% Off</text>
+                    </div>
+                    <div class="row justify-content-center mt-1 mb-3">
+                        <text>$ @Model.finalPrice</text>
+                    </div>
+                </div>
+                <div class="col">
+                    @if ((Context.Session.Get("Username") == null || (Context.Session.Get("Username") != null
+                        && Context.Session.GetInt32("Permission") == 0)) && !Model.IsGameOwned)
+                    {
+                        <div class="row justify-content-center">
+                            <button type="button" class="btn btn-dark mt-2 mb-2"
+                                    onclick="location.href='@Url.Action("PurchaseGame", "Marketplace",
+                                        new { GameID = Model.game.GameID })'">
+                                Purchase Game
+                            </button>
+                        </div>
+                        if (Model.IsGameWishlisted)
+                        {
+                            <div class="row justify-content-center">
+                                <button type="button" class="btn btn-dark"
+                                        onclick="location.href='@Url.Action("RemoveWishlist", "Marketplace",
+                                            new { GameID = Model.game.GameID })'">
+                                    Remove Wishlist
+                                </button>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row justify-content-center">
+                                <button type="button" class="btn btn-dark"
+                                        onclick="location.href='@Url.Action("AddWishlist", "Marketplace",
+                                            new { GameID = Model.game.GameID })'">
+                                    Add Wishlist
+                                </button>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="row justify-content-around mb-2">
+                @if (Context.Session.Get("Username") != null && (Context.Session.GetInt32("Permission") == 2
+               || Model.IsDeveloper))
+                {
+                        <button type="button" class="btn btn-dark"
+                                onclick="location.href='@Url.Action("EditGame", "Marketplace",
+                            new { GameID = Model.game.GameID })'">
+                            Edit Game
+                        </button>
+                        <button type="button" class="btn btn-dark" data-toggle="modal"
+                                data-target="#RemoveGameModal">
+                            Remove Game
+                        </button>
+                }
+            </div>
+            <div class="row bg-light">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <div class="row mt-2 ml-2">
+                                Developers:
+                            </div>
+                            <div class="list-group" style="overflow-y:auto; overflow-x:hidden; max-height:100px;">
+                                @foreach (DataLibrary.Models.DeveloperModel developer in Model.developers)
+                                {
+                                    <a href=@developer.Name class="list-group-item bg-light" style="border-top:none">
+                                        @developer.Name
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2 ml-2">
+                        Genre: @Model.game.Genre
+                    </div>
+                    @if (Model.forums.Count() > 0)
+                    {
+                        <div class="row mb-2">
+                            <div class="col">
+                                <div class="row ml-2">
+                                    Forums:
+                                </div>
+                                <div class="list-group" style="overflow-y:auto; overflow-x:hidden; max-height:100px;">
+                                    @foreach (DataLibrary.Models.ForumModel forum in Model.forums)
+                                    {
+                                        <a href=@forum.Link class="list-group-item bg-light" style="border-top:none">
+                                            @forum.Name
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="RemoveGameModal" tabindex="-1" role="dialog"
+     aria-labelledby="removeGameModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="removeGameModalLabel">Remove Game</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Are you sure you want to remove this game?</p>
+                <p>This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep Game</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        onclick="location.href='@Url.Action("RemoveGame", "Marketplace",
+                            new { GameID = Model.game.GameID })'">
+                    Remove Game
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -301,6 +301,78 @@ namespace DataLibrary.DataAccess
             return isFriend == 1;
         }
 
+        public static bool IsGameOwned(string Username, int GameID)
+        {
+            int gameOwned = 0;
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("is_GameOwned", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Username", Username);
+                cmd.Parameters.AddWithValue("@GameID", GameID);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    gameOwned = Convert.ToInt32(rdr["Owned"]);
+                }
+                conn.Close();
+            }
+
+            return gameOwned == 1;
+        }
+
+        public static bool IsGameWishListed(string Username, int GameID)
+        {
+            int wishlisted = 0;
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("is_WishListed", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Username", Username);
+                cmd.Parameters.AddWithValue("@GameID", GameID);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    wishlisted = Convert.ToInt32(rdr["Wishlisted"]);
+                }
+                conn.Close();
+            }
+
+            return wishlisted == 1;
+        }
+
+        public static void AddWishlist(string Username, int GameID)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("add_WishList", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@username", Username);
+                cmd.Parameters.AddWithValue("@gameID", GameID);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static void RemoveWishlist(string Username, int GameID)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("remove_Wishlist", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Username", Username);
+                cmd.Parameters.AddWithValue("@GameID", GameID);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
         public static void AddFriend(string PlayerUsername, string FriendUsername)
         {
             using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
@@ -418,6 +490,19 @@ namespace DataLibrary.DataAccess
             return gameID;
         }
 
+        public static void RemoveGame(int GameID)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("remove_Game", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@GameID", GameID);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
         public static void CreateCompetition(CompetitionModel competition)
         {
             using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
@@ -447,6 +532,30 @@ namespace DataLibrary.DataAccess
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
+        }
+
+        public static SaleModel GetSale(int GameID)
+        {
+            SaleModel sale = new SaleModel();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_Sale", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@GameID", GameID);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    sale.SaleID = Convert.ToInt32(rdr["SaleID"]);
+                    sale.SalePercent = Convert.ToInt32(rdr["SalePercent"]);
+                    sale.SaleDate = Convert.ToDateTime(rdr["SaleDate"]);
+                    sale.SaleGameID = Convert.ToInt32(rdr["SaleGameID"]);
+                }
+                conn.Close();
+            }
+
+            return sale;
         }
 
         public static int CreateStream(StreamModel stream)
@@ -557,6 +666,55 @@ namespace DataLibrary.DataAccess
             }
 
             return gameInfo;
+        }
+
+        public static List<DeveloperModel> GetGameDevelopers(int GameID)
+        {
+            List<DeveloperModel> developers = new List<DeveloperModel>();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_GameDevelopers", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@GameID", GameID);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    DeveloperModel developer = new DeveloperModel();
+                    developer.Name = rdr["DevName"].ToString();
+                    developer.Username = rdr["DevUsername"].ToString();
+                    developer.ID = Convert.ToInt32(rdr["DevID"]);
+                    developers.Add(developer);
+                }
+                conn.Close();
+            }
+
+            return developers;
+        }
+
+        public static List<ForumModel> GetGameForums(int GameID)
+        {
+            List<ForumModel> forums = new List<ForumModel>();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_GameForums", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@GameID", GameID);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    ForumModel forum = new ForumModel();
+                    forum.Link = rdr["ForumLink"].ToString();
+                    forum.Name = rdr["ForumName"].ToString();
+                    forums.Add(forum);
+                }
+                conn.Close();
+            }
+
+            return forums;
         }
 
         public static bool IsStreamHost(int StreamID, string Username)
