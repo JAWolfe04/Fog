@@ -28,13 +28,13 @@
                 </div>
                 <div class="col">
                     <div class="row justify-content-center mt-2">
-                        <text>$ @Model.game.price</text>
+                        <text>@Model.game.price.ToString("C")</text>
                     </div>
                     <div class="row justify-content-center mt-1">
                         <text>@Model.sale.SalePercent% Off</text>
                     </div>
                     <div class="row justify-content-center mt-1 mb-3">
-                        <text>$ @Model.finalPrice</text>
+                        <text>@Model.finalPrice.ToString("C")</text>
                     </div>
                 </div>
                 <div class="col">

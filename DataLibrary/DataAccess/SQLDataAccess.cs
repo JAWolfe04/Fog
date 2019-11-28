@@ -844,5 +844,26 @@ namespace DataLibrary.DataAccess
                 conn.Close();
             }
         }
+
+        public static void CreatePurchase(PurchaseModel purchase)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("create_Purchase", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@purchaseDate", purchase.PurchaseDate);
+                cmd.Parameters.AddWithValue("@Price", purchase.Price);
+                cmd.Parameters.AddWithValue("@CardNum", purchase.CardNumber);
+                cmd.Parameters.AddWithValue("@CardName", purchase.CardName);
+                cmd.Parameters.AddWithValue("@CardExp", purchase.CardExp);
+                cmd.Parameters.AddWithValue("@CardSecurity", purchase.CardSecurity);
+                cmd.Parameters.AddWithValue("@Username", purchase.Username);
+                cmd.Parameters.AddWithValue("@SaleID", purchase.SaleID);
+                cmd.Parameters.AddWithValue("@GameID", purchase.GameID);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
     }
 }

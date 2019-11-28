@@ -99,7 +99,61 @@ namespace Fog.Controllers
             if (HttpContext.Session.Get("Username") == null)
                 return RedirectToAction("Index", "Login");
 
-            return RedirectToAction("PurchaseGame", "Marketplace", new { GameID = GameID });
+
+            PurchaseModel purchase = new PurchaseModel();
+            purchase.Username = HttpContext.Session.GetString("Username");
+            DataLibrary.Models.SaleModel sale = DataLibrary.DataAccess.SQLDataAccess.GetSale(GameID);
+            DataLibrary.Models.GameModel game = DataLibrary.DataAccess.SQLDataAccess.GetGameInfo(GameID);
+            purchase.GameID = GameID;
+            purchase.GameTitle = game.Title;
+            purchase.Price = decimal.Round((decimal)game.price, 2);
+            if(sale.SaleDate.Date != DateTime.Today)
+                sale.SalePercent = 0;
+            purchase.Discount = purchase.Price * (sale.SalePercent / 100);
+            purchase.SubTotal = purchase.Price - purchase.Discount;
+            purchase.Tax = purchase.SubTotal * (decimal)0.1;
+            purchase.Total = purchase.SubTotal + purchase.Tax;
+
+            return View(purchase);
+        }
+
+        [HttpPost]
+        public IActionResult PurchaseGame(PurchaseModel purchase)
+        {
+            if (HttpContext.Session.Get("Username") == null)
+                return RedirectToAction("Index", "Login");
+
+            purchase.Username = HttpContext.Session.GetString("Username");
+            DataLibrary.Models.SaleModel sale = DataLibrary.DataAccess.SQLDataAccess.GetSale(purchase.GameID);
+            DataLibrary.Models.GameModel game = DataLibrary.DataAccess.SQLDataAccess.GetGameInfo(purchase.GameID);
+            purchase.GameTitle = game.Title;
+            purchase.Price = decimal.Round((decimal)game.price, 2);
+            if (sale.SaleDate.Date != DateTime.Today)
+                sale.SalePercent = 0;
+            purchase.Discount = purchase.Price * (sale.SalePercent / 100);
+            purchase.SubTotal = purchase.Price - purchase.Discount;
+            purchase.Tax = purchase.SubTotal * (decimal)0.1;
+            purchase.Total = purchase.SubTotal + purchase.Tax;
+
+            if (ModelState.IsValid)
+            {
+                DataLibrary.Models.PurchaseModel purchaseData = new DataLibrary.Models.PurchaseModel();
+                purchaseData.PurchaseDate = DateTime.Today;
+                purchaseData.Price = purchase.Total;
+                purchaseData.CardNumber = purchase.CardNumber;
+                purchaseData.CardName = purchase.CardName;
+                purchaseData.CardExp = purchase.CardExp;
+                purchaseData.CardSecurity = purchase.CardSecurity;
+                purchaseData.Username = purchase.Username;
+                purchaseData.GameID = purchase.GameID;
+                purchaseData.SaleID = sale.SaleID;
+                DataLibrary.DataAccess.SQLDataAccess.CreatePurchase(purchaseData);
+                if (DataLibrary.DataAccess.SQLDataAccess.IsGameWishListed(purchase.Username, purchase.GameID))
+                    DataLibrary.DataAccess.SQLDataAccess.RemoveWishlist(purchase.Username, purchase.GameID);
+                return RedirectToAction("GameInfo", "Marketplace", new { GameID = purchase.GameID });
+            }
+
+            return View(purchase);
         }
     }
 }
