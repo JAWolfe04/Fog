@@ -865,5 +865,88 @@ namespace DataLibrary.DataAccess
                 conn.Close();
             }
         }
+
+        public static List<GameModel> GetDevGames(int DevID)
+        {
+            List<GameModel> games = new List<GameModel>();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_DevGame", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Dev_ID", DevID);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    GameModel game = new GameModel();
+                    game.Title = rdr["GameTitle"].ToString();
+                    game.GameID = Convert.ToInt32(rdr["GameID"]);
+                    game.price = Convert.ToInt32(rdr["GamePrice"]);
+                    games.Add(game);
+                }
+                conn.Close();
+            }
+
+            return games;
+        }
+
+        public static DeveloperModel GetDevInfo(int DevID)
+        {
+            DeveloperModel developer = new DeveloperModel();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_DevInfo", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ID", DevID);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    developer.ID = DevID;
+                    developer.Name = rdr["DevName"].ToString();
+                    developer.About = rdr["DevAbout"].ToString();
+                    developer.Email = rdr["DevEmail"].ToString();
+                    developer.Link = rdr["DevLink"].ToString();
+                    developer.Phone = rdr["DevPhone"].ToString();
+                    developer.Routing = rdr["DevRoutingNum"].ToString();
+                    developer.Account = rdr["DevAccountNum"].ToString();
+                    developer.Username = rdr["DevUsername"].ToString();
+                }
+                conn.Close();
+            }
+
+            return developer;
+        }
+
+        public static DeveloperModel GetDevInfo(string Username)
+        {
+            DeveloperModel developer = new DeveloperModel();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_DevByName", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@username", Username);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    developer.ID = Convert.ToInt32(rdr["DevID"]);
+                    developer.Name = rdr["DevName"].ToString();
+                    developer.About = rdr["DevAbout"].ToString();
+                    developer.Email = rdr["DevEmail"].ToString();
+                    developer.Link = rdr["DevLink"].ToString();
+                    developer.Phone = rdr["DevPhone"].ToString();
+                    developer.Routing = rdr["DevRoutingNum"].ToString();
+                    developer.Account = rdr["DevAccountNum"].ToString();
+                    developer.Username = Username;
+                }
+                conn.Close();
+            }
+
+            return developer;
+        }
     }
 }
