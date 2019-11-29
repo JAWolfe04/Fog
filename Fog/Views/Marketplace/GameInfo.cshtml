@@ -95,12 +95,10 @@
                             <div class="row mt-2 ml-2">
                                 Developers:
                             </div>
-                            <div class="list-group" style="overflow-y:auto; overflow-x:hidden; max-height:100px;">
+                            <div class="list-group ml-3" style="overflow-y:auto; overflow-x:hidden; max-height:100px;">
                                 @foreach (DataLibrary.Models.DeveloperModel developer in Model.developers)
                                 {
-                                    <a href=@developer.Name class="list-group-item bg-light" style="border-top:none">
-                                        @developer.Name
-                                    </a>
+                                    @Html.ActionLink(@developer.Name, "DevInfo", "Developer", new { DevID = @developer.ID })
                                 }
                             </div>
                         </div>
@@ -115,12 +113,10 @@
                                 <div class="row ml-2">
                                     Forums:
                                 </div>
-                                <div class="list-group" style="overflow-y:auto; overflow-x:hidden; max-height:100px;">
+                                <div class="list-group ml-3" style="overflow-y:auto; overflow-x:hidden; max-height:100px; border:none">
                                     @foreach (DataLibrary.Models.ForumModel forum in Model.forums)
                                     {
-                                        <a href=@forum.Link class="list-group-item bg-light" style="border-top:none">
-                                            @forum.Name
-                                        </a>
+                                        <a href=@forum.Link>  @forum.Name </a>
                                     }
                                 </div>
                             </div>
