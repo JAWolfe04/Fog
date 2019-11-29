@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using Fog.Models;
+using DataLibrary.Models;
 
-namespace Fog.Controllers
+namespace DataLibrary.Controllers
 {
     public class CompetitionController : Controller
     {
@@ -24,7 +24,7 @@ namespace Fog.Controllers
                 compData.GameID = gameID;
                 DataLibrary.DataAccess.SQLDataAccess.CreateCompetition(compData);
 
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("AdminHome", "Home");
             }
             else
             {

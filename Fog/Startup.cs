@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using DataLibrary.DataAccess;
 
-namespace Fog
+namespace DataLibrary
 {
     public class Startup
     {

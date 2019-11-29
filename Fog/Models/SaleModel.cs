@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
-namespace Fog.Models
+namespace DataLibrary.Models
 {
     public class SaleModel
     {

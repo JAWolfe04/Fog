@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Fog.Models;
+using DataLibrary.Models;
 
-namespace Fog.Controllers
+namespace DataLibrary.Controllers
 {
     public class SaleController : Controller
     {
@@ -21,7 +21,7 @@ namespace Fog.Controllers
                 saleData.SalePercent = sale.SalePercent.GetValueOrDefault();
                 saleData.SaleGameID = gameID;
                 DataLibrary.DataAccess.SQLDataAccess.CreateSale(saleData);
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("AdminHome", "Home");
             }
             else
             {

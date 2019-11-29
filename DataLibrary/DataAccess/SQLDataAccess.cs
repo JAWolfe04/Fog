@@ -223,7 +223,7 @@ namespace DataLibrary.DataAccess
             }
         }
 
-            public static void DeletePlayer(string Username)
+        public static void DeletePlayer(string Username)
         {
             using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
             {
@@ -310,5 +310,6 @@ namespace DataLibrary.DataAccess
                 conn.Close();
             }
         }
+
     }
 }

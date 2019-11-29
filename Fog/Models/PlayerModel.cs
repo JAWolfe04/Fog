@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Fog.Models
+namespace DataLibrary.Models
 {
     public class PlayerModel
     {

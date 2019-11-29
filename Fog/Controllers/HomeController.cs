@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Fog.Models;
+using DataLibrary.Models;
 using DataLibrary.DataAccess;
 using Microsoft.AspNetCore.Http;
 
-namespace Fog.Controllers
+namespace DataLibrary.Controllers
 {
     public class HomeController : Controller
     {

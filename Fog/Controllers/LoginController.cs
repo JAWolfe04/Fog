@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Fog.Models;
+using DataLibrary.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace Fog.Controllers
+namespace DataLibrary.Controllers
 {
     public class LoginController : Controller
     {
