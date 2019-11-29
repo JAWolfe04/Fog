@@ -28,7 +28,7 @@ namespace Fog.Controllers
                     case 0:
                         return RedirectToAction("PlayerHome", "Home");
                     case 1:
-                        return RedirectToAction("Home", "Developer");
+                        return RedirectToAction("DevHome", "Developer");
                     case 2:
                         return RedirectToAction("AdminHome", "Home");
                     default:

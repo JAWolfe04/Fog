@@ -882,7 +882,7 @@ namespace DataLibrary.DataAccess
                     GameModel game = new GameModel();
                     game.Title = rdr["GameTitle"].ToString();
                     game.GameID = Convert.ToInt32(rdr["GameID"]);
-                    game.price = Convert.ToInt32(rdr["GamePrice"]);
+                    game.price = Convert.ToDouble(rdr["GamePrice"]);
                     games.Add(game);
                 }
                 conn.Close();
