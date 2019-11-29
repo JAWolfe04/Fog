@@ -948,5 +948,56 @@ namespace DataLibrary.DataAccess
 
             return developer;
         }
+
+        public static List<GameStatModel> GetDevGameStats(int DevID)
+        {
+            List<GameStatModel> gameStats = new List<GameStatModel>();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_DevGameStat", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@DevID", DevID);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    GameStatModel gameStat = new GameStatModel();
+                    gameStat.GameID = Convert.ToInt32(rdr["GameID"]);
+                    gameStat.Title = rdr["GameTitle"].ToString();
+                    gameStat.Purchases = Convert.ToInt32(rdr["Purchase"]);
+                    gameStat.Total = Convert.ToDecimal(rdr["Total"]);
+                    gameStats.Add(gameStat);
+                }
+                conn.Close();
+            }
+
+            return gameStats;
+        }
+
+        public static List<GenreStatModel> GetDevGenreStats(int DevID)
+        {
+            List<GenreStatModel> genreStats = new List<GenreStatModel>();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_DevGenreStat", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@DevID", DevID);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    GenreStatModel genreStat = new GenreStatModel();
+                    genreStat.Genre = rdr["GameGenre"].ToString();
+                    genreStat.purchases = Convert.ToInt32(rdr["Purchase"]);
+                    genreStat.Total = Convert.ToDecimal(rdr["Total"]);
+                    genreStats.Add(genreStat);
+                }
+                conn.Close();
+            }
+
+            return genreStats;
+        }
     }
 }

@@ -26,5 +26,14 @@ namespace Fog.Controllers
 
             return View(DevInfo);
         }
+
+        public IActionResult DevStats(int DevID)
+        {
+            DataLibrary.Models.DevStatsModel devStats = new DataLibrary.Models.DevStatsModel();
+            devStats.gameStats = DataLibrary.DataAccess.SQLDataAccess.GetDevGameStats(DevID);
+            devStats.genreStats = DataLibrary.DataAccess.SQLDataAccess.GetDevGenreStats(DevID);
+
+            return View(devStats);
+        }
     }
 }
