@@ -1,0 +1,109 @@
+﻿@model Fog.Models.DevHomeModel
+@{
+    ViewData["Title"] = "Developer Home";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <h1>@Model.DevInfo.Name</h1>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 mr-4">
+            <div class="row">
+                <textarea rows="8" style="min-width: 100%; resize:none" readonly>@Model.DevInfo.About</textarea>
+            </div>
+            <div class="row mt-4">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.games)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("View", "GameInfo", "Marketplace", new { GameID = item.GameID })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="row bg-light">
+                <div class="col">
+                    <div class="row ml-2 mt-2 mb-3">
+                        Contact Information
+                    </div>
+                    <div class="row ml-4 mb-3">
+                        Email: @Model.DevInfo.Email
+                    </div>
+                    <div class="row ml-4 mb-3">
+                        Phone: @Model.DevInfo.Phone
+                    </div>
+                    <div class="row ml-4 mb-4">
+                        Website: @Model.DevInfo.Link
+                    </div>
+                    <div class="row mb-3">
+                        <button type="button" class="btn btn-dark btn-block"
+                                onclick="location.href='@Url.Action("CreateGame", "Developer")'">
+                            Create Game
+                        </button>
+                    </div>
+                    <div class="row mb-3">
+                        <button type="button" class="btn btn-dark btn-block"
+                                onclick="location.href='@Url.Action("Statistics",
+                                "Developer", new { DevID = Model.DevInfo.ID })'">
+                            Statistics
+                        </button>
+                    </div>
+                    <div class="row mb-3">
+                        <button type="button" class="btn btn-dark btn-block"
+                                onclick="location.href='@Url.Action("Edit",
+                                "Developer", new { DevID = Model.DevInfo.ID })'">
+                            Edit Profile
+                        </button>
+                    </div>
+                    <div class="row mb-3">
+                        <button type="button" class="btn btn-dark btn-block" data-toggle="modal"
+                            data-target="#RemoveDevModal">
+                            Remove account
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="RemoveDevModal" tabindex="-1" role="dialog"
+     aria-labelledby="removeAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="removeAccountModalLabel">Remove Account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Are you sure you want to remove this account?</p>
+                <p>This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep Account</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        onclick="location.href='@Url.Action("RemoveDev", "Login")'">
+                    Remove Account
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

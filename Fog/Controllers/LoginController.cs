@@ -28,7 +28,7 @@ namespace Fog.Controllers
                     case 0:
                         return RedirectToAction("PlayerHome", "Home");
                     case 1:
-                        return RedirectToAction("DevHome", "Home");
+                        return RedirectToAction("Home", "Developer");
                     case 2:
                         return RedirectToAction("AdminHome", "Home");
                     default:
@@ -102,7 +102,7 @@ namespace Fog.Controllers
             return RedirectToAction("PlayerHome","Home");
         }
 
-            public IActionResult RemovePlayer()
+        public IActionResult RemovePlayer()
         {
             DataLibrary.DataAccess.SQLDataAccess.DeletePlayer(HttpContext.Session.GetString("Username"));
 
@@ -119,7 +119,10 @@ namespace Fog.Controllers
 
         public IActionResult RemoveDev()
         {
-            return View();
+            if (HttpContext.Session.GetInt32("Permission") == 2)
+                return RedirectToAction("Developers", "Marketplace");
+            else
+                return Logout();
         }
 
         public IActionResult CreateAdmin()

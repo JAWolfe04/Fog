@@ -12,8 +12,8 @@ namespace DataLibrary.Models
         public string Email { get; set; }
         public string Link { get; set; }
         public string Phone { get; set; }
-        public int Account { get; set; }
-        public int Routing { get; set; }
+        public string Account { get; set; }
+        public string Routing { get; set; }
         public string Username { get; set; }
     }
 }
