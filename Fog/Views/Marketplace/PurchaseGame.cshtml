@@ -1,0 +1,74 @@
+﻿@model Fog.Models.PurchaseModel
+@{
+    ViewData["Title"] = "Purchase Game";
+}
+
+<div class="container">
+    <form asp-action="PurchaseGame">
+        <input type="hidden" asp-for="GameID">
+        <div class="row mt-4">
+            <div class="col">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <div class="row ml-4">Game:</div>
+                        <div class="row ml-5">@Model.GameTitle</div>
+                        <div class="row ml-4 mt-4">Player Account:</div>
+                        <div class="row ml-5">@Model.Username</div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col">Price</div>
+                            <div class="col">@Model.Price.ToString("C")</div>
+                        </div>
+                        <div class="row">
+                            <div class="col">Discount</div>
+                            <div class="col">@Model.Discount.ToString("C")</div>
+                        </div>
+                        <div class="row">
+                            <div class="col">Subtotal</div>
+                            <div class="col">@Model.SubTotal.ToString("C")</div>
+                        </div>
+                        <div class="row">
+                            <div class="col">Tax</div>
+                            <div class="col">@Model.Tax.ToString("C")</div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col">Total</div>
+                            <div class="col">@Model.Total.ToString("C")</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label asp-for="CardNumber" class="control-label"></label>
+                            <input asp-for="CardNumber" class="form-control" placeholder="################" />
+                            <span asp-validation-for="CardNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CardName" class="control-label"></label>
+                            <input asp-for="CardName" class="form-control" placeholder="Name" />
+                            <span asp-validation-for="CardName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label asp-for="CardExp" class="control-label"></label>
+                            <input asp-for="CardExp" class="form-control" placeholder="MM/YY"/>
+                            <span asp-validation-for="CardExp" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CardSecurity" class="control-label"></label>
+                            <input asp-for="CardSecurity" class="form-control" placeholder="###" />
+                            <span asp-validation-for="CardSecurity" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </div>
+    </form>
+</div>

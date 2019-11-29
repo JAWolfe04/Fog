@@ -15,7 +15,11 @@ namespace DataLibrary.Controllers
         public IActionResult CreateCompetition(CompetitionModel newComp)
         {
             int gameID = DataLibrary.DataAccess.SQLDataAccess.getGameID(newComp.GameTitle);
-            if (gameID > 0)
+
+            if (gameID < 0)
+                ModelState.AddModelError("Game", "The game was not found. Please check the game and try again.");
+
+            if(ModelState.IsValid)
             {
                 DataLibrary.Models.CompetitionModel compData = new DataLibrary.Models.CompetitionModel();
                 compData.Title = newComp.Title;
@@ -26,11 +30,8 @@ namespace DataLibrary.Controllers
 
                 return RedirectToAction("AdminHome", "Home");
             }
-            else
-            {
-                ModelState.AddModelError("Game", "The game was not found. Please check the game and try again.");
-                return View(newComp);
-            }
+            
+            return View(newComp);
         }
     }
 }

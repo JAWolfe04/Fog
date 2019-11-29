@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using DataLibrary.Models;
-using DataLibrary.DataAccess;
+using Fog.Models;
+
 using Microsoft.AspNetCore.Http;
 
 namespace DataLibrary.Controllers
@@ -17,12 +17,40 @@ namespace DataLibrary.Controllers
         {
             PlayerHomeModel homeModel = new PlayerHomeModel();
             string Username = HttpContext.Session.GetString("Username");
-            homeModel.PurchasedGames = SQLDataAccess.GetPurchasedGames(Username);
-            homeModel.Friends = SQLDataAccess.GetFriends(Username);
-            homeModel.FollowedStreams = SQLDataAccess.GetFollowedStreams(Username);
-            homeModel.Wishlist = SQLDataAccess.GetWishlist(Username);
-            homeModel.PlayerInfo = SQLDataAccess.GetPlayerInfo(Username);
+            homeModel.PurchasedGames = DataLibrary.DataAccess.SQLDataAccess.GetPurchasedGames(Username);
+            homeModel.Friends = DataLibrary.DataAccess.SQLDataAccess.GetFriends(Username);
+            homeModel.FollowedStreams = DataLibrary.DataAccess.SQLDataAccess.GetFollowedStreams(Username);
+            homeModel.Wishlist = DataLibrary.DataAccess.SQLDataAccess.GetWishlist(Username);
+            homeModel.PlayerInfo = DataLibrary.DataAccess.SQLDataAccess.GetPlayerInfo(Username);
             return View(homeModel);
+        }
+
+        public IActionResult PlayerInfo(string playerUsername)
+        {
+            string Username = HttpContext.Session.GetString("Username");
+            PlayerInfoModel playerInfo = new PlayerInfoModel();
+            playerInfo.IsFriend = DataLibrary.DataAccess.SQLDataAccess.IsFriend(Username, playerUsername);
+            playerInfo.PlayerInfo = DataLibrary.DataAccess.SQLDataAccess.GetPlayerInfo(playerUsername);
+            playerInfo.PurchasedGames = DataLibrary.DataAccess.SQLDataAccess.GetPurchasedGames(playerUsername);
+            playerInfo.Friends = DataLibrary.DataAccess.SQLDataAccess.GetFriends(playerUsername);
+            playerInfo.FollowedStreams = DataLibrary.DataAccess.SQLDataAccess.GetFollowedStreams(playerUsername);
+            playerInfo.Wishlist = DataLibrary.DataAccess.SQLDataAccess.GetWishlist(playerUsername);
+
+            return View(playerInfo);
+        }
+
+        public IActionResult FriendPlayer(string Username)
+        {
+            string PlayerUsername = HttpContext.Session.GetString("Username");
+            DataLibrary.DataAccess.SQLDataAccess.AddFriend(PlayerUsername, Username);
+            return RedirectToAction("PlayerInfo", "Home", new { playerUsername = Username });
+        }
+
+        public IActionResult UnfriendPlayer(string Username)
+        {
+            string PlayerUsername = HttpContext.Session.GetString("Username");
+            DataLibrary.DataAccess.SQLDataAccess.RemoveFriend(PlayerUsername, Username);
+            return RedirectToAction("PlayerInfo", "Home", new { playerUsername = Username });
         }
 
         public IActionResult DevHome()

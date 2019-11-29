@@ -18,6 +18,7 @@
     <tbody>
         @foreach (var item in Model)
         {
+            var price = item.price.ToString("C");
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -26,10 +27,10 @@
                 @Html.DisplayFor(modelItem => item.Genre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.price)
+                @Html.DisplayFor(modelItem => price)
             </td>
             <td>
-                @Html.ActionLink("Info", "GameInfo", new { id = item.GameID })
+                @Html.ActionLink("Info", "GameInfo", new { GameID = item.GameID })
             </td>
         </tr>
         }

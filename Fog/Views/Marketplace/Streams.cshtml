@@ -10,19 +10,23 @@
     <thead>
         <tr>
             <th>Title</th>
+            <th>Game</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.ActionLink("Index", "StreamInfo", new { id = item.StreamID })
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GameTitle)
+            </td>
+            <td>
+                @Html.ActionLink("Info", "StreamInfo", "Stream", new { StreamID = item.StreamID })
+            </td>
+        </tr>
         }
     </tbody>
 </table>
