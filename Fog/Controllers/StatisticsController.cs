@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DataLibrary.Controllers
+namespace Fog.Controllers
 {
     public class StatisticsController : Controller
     {
         public IActionResult Statistics()
         {
 
-            List<Models.StreamModel> gameStats = new List<Models.StreamModel>();
+            List<DataLibrary.Models.StreamModel> gameStats = new List<DataLibrary.Models.StreamModel>();
             List<Models.GenreStats> genreStats = new List<Models.GenreStats>();
             List<Models.DevStats> devStats = new List<Models.DevStats>();
 

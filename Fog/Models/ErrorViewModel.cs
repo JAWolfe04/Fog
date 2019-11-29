@@ -1,6 +1,6 @@
 using System;
 
-namespace DataLibrary.Models
+namespace Fog.Models
 {
     public class ErrorViewModel
     {

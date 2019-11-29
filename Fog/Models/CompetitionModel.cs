@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataLibrary.Models
+namespace Fog.Models
 {
     public class CompetitionModel
     {

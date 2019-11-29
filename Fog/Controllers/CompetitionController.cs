@@ -1,6 +1,5 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
-using DataLibrary.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Fog.Models;
 
 namespace DataLibrary.Controllers
 {

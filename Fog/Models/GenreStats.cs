@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DataLibrary.Models
+namespace Fog.Models
 {
     public class GenreStats
     {

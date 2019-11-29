@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DataLibrary.Models
+namespace Fog.Models
 {
     public class PlayerHomeModel
     {
