@@ -1,0 +1,132 @@
+﻿@model Fog.Models.StatisticViewModel
+@{
+    ViewData["Title"] = "Statistics";
+}
+
+<h1>Statistics</h1>
+
+
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#Game">Game</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#Genre">Genre</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#Developer">Developer</a>
+    </li>
+</ul>
+
+<div class="container-fluid">
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="Game">
+            <table class="table table-responsive-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Game Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Purchase")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Total")
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @*Iterating Game ViewModel *@
+                    @foreach (var item in Model.Game)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Purchases)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Total)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="Genre">
+            <table class="table table-responsive-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Genre")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Purchase")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Total")
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @*Iterating Genre ViewModel *@
+                    @foreach (var item in Model.Genre)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Genre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.purchases)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Total)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="Developer">
+            <table class="table table-responsive-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Developer")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Purchase")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Total")
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @*Iterating Developer ViewModel *@
+                    @foreach (var item in Model.Dev)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Developer)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Purchase)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Total)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
