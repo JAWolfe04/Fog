@@ -999,5 +999,103 @@ namespace DataLibrary.DataAccess
 
             return genreStats;
         }
+
+        public static int CreateGame(GameModel game)
+        {
+            int gameID = 0;
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("create_Game", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@gameTitle", game.Title);
+                cmd.Parameters.AddWithValue("@gameDesc", game.Desc);
+                cmd.Parameters.AddWithValue("@gamePrice", game.price);
+                cmd.Parameters.AddWithValue("@gameGenre", game.Genre);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    gameID = Convert.ToInt32(rdr["GameID"]);
+                }
+                conn.Close();
+            }
+
+            return gameID;
+        }
+
+        public static void EditGame(GameModel game)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("update_Game", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@GameID", game.GameID);
+                cmd.Parameters.AddWithValue("@gameTitle", game.Title);
+                cmd.Parameters.AddWithValue("@gameDesc", game.Desc);
+                cmd.Parameters.AddWithValue("@gamePrice", game.price);
+                cmd.Parameters.AddWithValue("@gameGenre", game.Genre);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static void AddGameDev(int DevID, int GameID)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("add_GameDev", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@DevID", DevID);
+                cmd.Parameters.AddWithValue("@GameID", GameID);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static void RemoveGameDev(int DevID, int GameID)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("remove_GameDev", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@DevID", DevID);
+                cmd.Parameters.AddWithValue("@GameID", GameID);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static void AddGameForum(ForumModel forum)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("create_Forum", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Link", forum.Link);
+                cmd.Parameters.AddWithValue("@GameID", forum.GameID);
+                cmd.Parameters.AddWithValue("@Name", forum.Name);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static void RemoveGameForum(ForumModel forum)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            {
+                MySqlCommand cmd = new MySqlCommand("remove_Forum", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Link", forum.Link);
+                cmd.Parameters.AddWithValue("@GameID", forum.GameID);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
     }
 }

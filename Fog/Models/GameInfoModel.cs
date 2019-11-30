@@ -10,7 +10,7 @@ namespace Fog.Models
         public bool IsGameWishlisted { get; set; }
         public DataLibrary.Models.GameModel game { get; set; }
         public DataLibrary.Models.SaleModel sale { get; set; }
-        public IEnumerable<DataLibrary.Models.DeveloperModel> developers { get; set; }
-        public IEnumerable<DataLibrary.Models.ForumModel> forums { get; set; }
+        public List<DataLibrary.Models.DeveloperModel> developers { get; set; }
+        public List<DataLibrary.Models.ForumModel> forums { get; set; }
     }
 }
