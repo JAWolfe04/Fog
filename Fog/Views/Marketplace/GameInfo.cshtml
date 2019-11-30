@@ -73,21 +73,6 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <div class="row justify-content-around mb-2">
-                @if (Context.Session.Get("Username") != null && (Context.Session.GetInt32("Permission") == 2
-               || Model.IsDeveloper))
-                {
-                        <button type="button" class="btn btn-dark"
-                                onclick="location.href='@Url.Action("EditGame", "Marketplace",
-                            new { GameID = Model.game.GameID })'">
-                            Edit Game
-                        </button>
-                        <button type="button" class="btn btn-dark" data-toggle="modal"
-                                data-target="#RemoveGameModal">
-                            Remove Game
-                        </button>
-                }
-            </div>
             <div class="row bg-light">
                 <div class="col">
                     <div class="row">
@@ -103,12 +88,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-2 mb-2 ml-2">
+                    <div class="row mt-2 mb-3 ml-2">
                         Genre: @Model.game.Genre
                     </div>
                     @if (Model.forums.Count() > 0)
                     {
-                        <div class="row mb-2">
+                        <div class="row mb-3">
                             <div class="col">
                                 <div class="row ml-2">
                                     Forums:
@@ -120,6 +105,51 @@
                                     }
                                 </div>
                             </div>
+                        </div>
+                    }
+                    @if (Context.Session.Get("Username") != null && (Context.Session.GetInt32("Permission") == 2
+               || Model.IsDeveloper))
+                    {
+                        <div class="row mb-3">
+                            <button type="button" class="btn btn-dark btn-block"
+                                    onclick="location.href='@Url.Action("EditGame", "Marketplace",
+                                new { GameID = Model.game.GameID })'">
+                                Edit Game
+                            </button>
+                        </div>
+                        <div class="row mb-3">
+                            <button type="button" class="btn btn-dark btn-block"
+                                    onclick="location.href='@Url.Action("AddForum", "Marketplace",
+                                new { GameID = Model.game.GameID })'">
+                                Add Forum
+                            </button>
+                        </div>
+                        <div class="row mb-3">
+                            <button type="button" class="btn btn-dark btn-block"
+                                    onclick="location.href='@Url.Action("RemoveForum", "Marketplace",
+                                    new { GameID = Model.game.GameID })'">
+                                Remove Forum
+                            </button>
+                        </div>
+                        <div class="row mb-3">
+                            <button type="button" class="btn btn-dark btn-block"
+                                    onclick="location.href='@Url.Action("AddGameDev", "Marketplace",
+                                new { GameID = Model.game.GameID })'">
+                                Add Developer
+                            </button>
+                        </div>
+                        <div class="row mb-3">
+                            <button type="button" class="btn btn-dark btn-block"
+                                    onclick="location.href='@Url.Action("RemoveGameDev", "Marketplace",
+                                new { GameID = Model.game.GameID })'">
+                                Remove Developer
+                            </button>
+                        </div>
+                        <div class="row mb-3">
+                            <button type="button" class="btn btn-dark btn-block" data-toggle="modal"
+                                    data-target="#RemoveGameModal">
+                                Remove Game
+                            </button>
                         </div>
                     }
                 </div>

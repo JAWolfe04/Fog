@@ -1,0 +1,22 @@
+﻿@model Fog.Models.RemoveForumModel
+@{
+    ViewData["Title"] = "Remove Forum";
+}
+
+<h1>Remove Forum</h1>
+
+<form asp-action="RemoveForum">
+    <input type="hidden" asp-for="GameID">
+    <div class="row mt-4 form-inline">
+        <select class="form-control" asp-for="position">
+            <option value="">Pick one</option>
+            @foreach (var forum in Model.forumList)
+            {
+                <option value=@forum.Value>@forum.Text</option>
+            }
+        </select>
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
