@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Fog.Models
@@ -23,5 +24,13 @@ namespace Fog.Models
         public string Description { set; get; }
 
         public int GameID { set; get; }
+
+        public int CompID { get; set; }
+
+        public bool IsEntered { get; set; }
+
+        public string strDate { get; set; }
+
+        public List<DataLibrary.Models.PlayerModel> EnteredPlayers { get; set; }
     }
 }

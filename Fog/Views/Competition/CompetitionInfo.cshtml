@@ -1,0 +1,116 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model Fog.Models.CompetitionModel
+@{
+    ViewData["Title"] = "Competition Info";
+}
+
+<h1 class="text-center">@Model.Title</h1>
+
+<div class="row justify-content-center">
+    <h4>Game: @Model.GameTitle</h4>
+</div>
+<div class="row justify-content-center">
+    <h4>Date: @Model.strDate</h4>
+</div>
+<div class="row justify-content-center">
+
+    <textarea rows="8" style="min-width: 100%; resize:none" readonly>@Model.Description</textarea>
+</div>
+<div class="row justify-content-center mt-4">
+    <h4>Entered Players:</h4>
+</div>
+<div class="row justify-content-center" style="height:200px; overflow:auto">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Player Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.EnteredPlayers)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DisplayName)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Info", "PlayerInfo", "Home", new { playerUsername = item.Username })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (Context.Session.Get("Username") != null && Context.Session.GetInt32("Permission") == 2)
+{
+    <div class="row justify-content-center mb-2">
+        <div class="col-4">
+            <button type="button" class="btn btn-dark btn-block"
+                    onclick="location.href='@Url.Action("EditCompetition", "Competition",
+                                                new { CompID = Model.CompID })'">
+                Edit Competition
+            </button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <button type="button" class="btn btn-dark btn-block" data-toggle="modal" data-target="#RemoveCompModal">
+                Remove Competition
+            </button>
+        </div>
+    </div>
+}
+else
+{
+    @if (Model.IsEntered)
+    {
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <button type="button" class="btn btn-dark btn-block"
+                        onclick="location.href='@Url.Action("LeaveCompetition", "Competition",
+                                                new { CompID = Model.CompID })'">
+                    Leave Competition
+                </button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <button type="button" class="btn btn-dark btn-block"
+                        onclick="location.href='@Url.Action("EnterCompetition", "Competition",
+                                                new { CompID = Model.CompID })'">
+                    Enter Competition
+                </button>
+            </div>
+        </div>
+    }
+}
+
+<div class="modal fade" id="RemoveCompModal" tabindex="-1" role="dialog"
+     aria-labelledby="removeCompModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="removeCompModalLabel">Remove Competition</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Are you sure you want to remove this Competition?</p>
+                <p>This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep Competition</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        onclick="location.href='@Url.Action("RemoveCompetition", "Competition",
+                                                new { CompID = Model.CompID })'">
+                    Remove Competition
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
