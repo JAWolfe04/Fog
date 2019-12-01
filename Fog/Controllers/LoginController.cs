@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Fog.Models;
 using Microsoft.AspNetCore.Http;
+using Fog.Models;
+using DataLibrary.Models;
+using DeveloperModel = DataLibrary.Models.DeveloperModel;
 
-namespace Fog.Controllers
+namespace DataLibrary.Controllers
 {
     public class LoginController : Controller
     {
@@ -48,7 +50,7 @@ namespace Fog.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreatePlayer(PlayerModel player)
+        public IActionResult CreatePlayer(Models.PlayerModel player)
         {
             if(ModelState.IsValid)
             {
@@ -79,7 +81,7 @@ namespace Fog.Controllers
 
         public IActionResult EditPlayer()
         {
-            PlayerModel player = new PlayerModel();
+            Models.PlayerModel player = new Models.PlayerModel();
             DataLibrary.Models.PlayerModel playerData = DataLibrary.DataAccess.SQLDataAccess.GetPlayerInfo(
                 HttpContext.Session.GetString("Username"));
             player.Username = playerData.Username;
@@ -90,7 +92,7 @@ namespace Fog.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditPlayer(PlayerModel player)
+        public IActionResult EditPlayer(Models.PlayerModel player)
         {
             DataLibrary.Models.PlayerModel playerData = new DataLibrary.Models.PlayerModel();
             playerData.Username = HttpContext.Session.GetString("Username");
@@ -112,10 +114,43 @@ namespace Fog.Controllers
                 return Logout();
         }
 
+
         public IActionResult CreateDev()
         {
             return View();
+
         }
+        [HttpPost]
+        public IActionResult CreateDev(Fog.Models.DeveloperModel developer)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                if (DataLibrary.DataAccess.SQLDataAccess.GetPlayerInfo(developer.Username).Username == developer.Username)
+                {
+                    ModelState.AddModelError("Username",
+                        "The entered username already exists. Please enter a different username.");
+                }
+                else
+                {
+                    DataLibrary.Models.DeveloperModel DeveloperData = new DataLibrary.Models.DeveloperModel();
+                    DeveloperData.About = developer.About;
+                    DeveloperData.Account = developer.BankAccountNumber.ToString();
+                    DeveloperData.Email = developer.Email;
+                    DeveloperData.Link = developer.WebLink;
+                    DeveloperData.Name = developer.CompanyName;
+                    DeveloperData.Password = developer.Password;
+                    DeveloperData.Phone = developer.Phone;
+                    DeveloperData.Routing = developer.BankRoutingNumber.ToString();
+                    DeveloperData.Username = developer.Username;
+
+                    DataLibrary.DataAccess.SQLDataAccess.CreateDeveloper(DeveloperData);
+                    return RedirectToAction("AdminHome", "Home");
+                }
+            }
+            return View(developer);
+        }
+
 
         public IActionResult RemoveDev()
         {
@@ -128,6 +163,34 @@ namespace Fog.Controllers
         public IActionResult CreateAdmin()
         {
             return View();
+        }
+        [HttpPost]
+        public IActionResult CreateAdmin(Fog.Models.PlayerModel player)
+        {
+            if (ModelState.IsValid)
+            {
+                if (DataLibrary.DataAccess.SQLDataAccess.GetPlayerInfo(player.Username).Username == player.Username)
+                {
+                    ModelState.AddModelError("Username",
+                        "The entered username already exists. Please enter a different username.");
+                }
+                else
+                {
+                    DataLibrary.Models.PlayerModel playerData = new DataLibrary.Models.PlayerModel();
+                    playerData.DisplayName = player.DisplayName;
+                    playerData.Email = player.Email;
+                    playerData.Password = player.Password;
+                    playerData.Username = player.Username;
+                    DataLibrary.DataAccess.SQLDataAccess.CreateAdmin(playerData);
+                    //HttpContext.Session.SetString("DisplayName", player.DisplayName);
+                    //HttpContext.Session.SetString("Username", player.Username);
+                    //HttpContext.Session.SetInt32("Permission", 2);
+
+                    return RedirectToAction("AdminHome", "Home");
+                }
+            }
+
+            return View(player);
         }
 
         public IActionResult RemoveAdmin()
