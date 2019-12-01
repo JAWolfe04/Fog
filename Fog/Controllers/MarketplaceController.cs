@@ -19,7 +19,17 @@ namespace Fog.Controllers
         }
         public IActionResult Competitions()
         {
-            return View(DataLibrary.DataAccess.SQLDataAccess.GetCompetitions());
+            List<CompetitionModel> comps = new List<CompetitionModel>();
+            foreach(var compData in DataLibrary.DataAccess.SQLDataAccess.GetCompetitions())
+            {
+                CompetitionModel comp = new CompetitionModel();
+                comp.Title = compData.Title;
+                comp.strDate = compData.Date.ToString("MM/dd/yyyy");
+                comp.GameTitle = compData.GameTitle;
+                comp.CompID = compData.CompID;
+                comps.Add(comp);
+            }
+            return View(comps);
         }
         public IActionResult Developers()
         {

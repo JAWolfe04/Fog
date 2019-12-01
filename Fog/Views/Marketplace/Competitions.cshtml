@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataLibrary.Models.CompetitionModel>
+﻿@model IEnumerable<Fog.Models.CompetitionModel>
 @{
     ViewData["Title"] = "Competition Forum";
 }
@@ -24,10 +24,10 @@
                     @Html.DisplayFor(modelItem => item.GameTitle)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Date)
+                    @Html.DisplayFor(modelItem => item.strDate)
                 </td>
                 <td>
-                    @Html.ActionLink("Info", "Index", "CompetitionInfo", new { id = item.CompID })
+                    @Html.ActionLink("Info", "CompetitionInfo", "Competition", new { CompID = item.CompID })
                 </td>
             </tr>
             }
