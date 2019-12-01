@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Admin Page";
+}
+
+<h1 align="center">Admin Page</h1>
+
+<form>
+    <br><br>
+
+    <div style="background-color: #ffffff; width: 50%; height: 50%; margin: auto;" align="center">
+
+        <button type="submit" class="btn btn-dark btn-block" style="border-color: #808080;"
+                asp-controller="Sale" asp-action="CreateSale">
+            Create Sale
+        </button>
+        <br>
+        <button type="submit" class="btn btn-dark btn-block" style="border-color: #808080;"
+                asp-controller="Competition" asp-action="CreateCompetition">
+            Create Competition
+        </button>
+        <br>
+        <button type="submit" class="btn btn-dark btn-block" style="border-color: #808080;"
+                asp-controller="Login" asp-action="CreateDev">
+            Create Developer
+        </button>
+        <br>
+        <button type="submit" class="btn btn-dark btn-block" style="border-color: #808080;"
+                asp-controller="Login" asp-action="CreateAdmin">
+            Create Administrator
+        </button>
+        <br>
+        <button type="submit" class="btn btn-dark btn-block" style="border-color: #808080;"
+                asp-controller="Admin" asp-action="EditAdmin">
+            Edit Profile
+        </button>
+        <br>
+        <button type="submit" class="btn btn-dark btn-block" style="border-color: #808080;"
+                asp-controller="Admin" asp-action="AdminStats">
+            Statistic
+        </button>
+
+    </div>
+</form>

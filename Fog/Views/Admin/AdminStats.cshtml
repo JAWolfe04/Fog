@@ -1,11 +1,9 @@
-﻿@model Fog.Models.StatisticViewModel
+﻿@model DataLibrary.Models.AdminStatsModel
 @{
     ViewData["Title"] = "Statistics";
 }
 
 <h1>Statistics</h1>
-
-
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -23,7 +21,7 @@
 
 <div class="container-fluid">
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade in active" id="Game">
+        <div role="tabpanel" class="tab-pane fade show active" id="Game">
             <table class="table table-responsive-sm table-hover">
                 <thead>
                     <tr>
@@ -111,11 +109,11 @@
                 </thead>
                 <tbody>
                     @*Iterating Developer ViewModel *@
-                    @foreach (var item in Model.Dev)
+                    @foreach (var item in Model.Devs)
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Developer)
+                                @Html.DisplayFor(modelItem => item.DevName)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Purchase)

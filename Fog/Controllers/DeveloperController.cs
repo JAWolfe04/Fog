@@ -27,6 +27,50 @@ namespace Fog.Controllers
             return View(DevInfo);
         }
 
+        public IActionResult EditDev(int DevID)
+        {
+            string Username = HttpContext.Session.GetString("Username");
+            DeveloperModel dev = new DeveloperModel();
+            DataLibrary.Models.DeveloperModel devData = DataLibrary.DataAccess.SQLDataAccess.GetDevInfoAccount(DevID, Username);
+            dev.About = devData.About;
+            dev.BankAccountNumber = devData.Account;
+            dev.BankRoutingNumber = devData.Routing;
+            dev.CompanyName = devData.Name;
+            dev.Email = devData.Email;
+            dev.ID = devData.ID;
+            dev.Phone = devData.Phone;
+            dev.Username = devData.Username;
+            dev.WebLink = devData.Link;
+
+            return View(dev);
+        }
+
+        [HttpPost]
+        public IActionResult EditDev(DeveloperModel dev)
+        {
+            if (DataLibrary.DataAccess.SQLDataAccess.GetPlayerInfo(dev.Username).Username == null)
+                ModelState.AddModelError("Username", "Username not found. Please try again.");
+
+            if(ModelState.IsValid)
+            {
+                DataLibrary.Models.DeveloperModel devData = new DataLibrary.Models.DeveloperModel();
+                devData.About = dev.About;
+                devData.Account = dev.BankAccountNumber;
+                devData.Routing = dev.BankRoutingNumber;
+                devData.Name = dev.CompanyName;
+                devData.Email = dev.Email;
+                devData.ID = dev.ID;
+                devData.Phone = dev.Phone;
+                devData.Username = dev.Username;
+                devData.Link = dev.WebLink;
+                DataLibrary.DataAccess.SQLDataAccess.EditDev(devData);
+
+                return RedirectToAction("DevInfo", "Developer", new { DevID = dev.ID });
+            }
+
+            return View(dev);
+        }
+
         public IActionResult DevStats(int DevID)
         {
             DataLibrary.Models.DevStatsModel devStats = new DataLibrary.Models.DevStatsModel();
