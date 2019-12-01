@@ -1,6 +1,4 @@
-﻿@using DataLibrary.Models
-
-@model Fog.Models.PlayerHomeModel
+﻿@model Fog.Models.PlayerHomeModel
 
 @{
     ViewData["Title"] = "PlayerHome";
@@ -20,7 +18,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (GameModel game in Model.PurchasedGames.Take(5))
+                    @foreach (DataLibrary.Models.GameModel game in Model.PurchasedGames.Take(5))
                     {
                         <tr>
                             <td>@game.Title</td>
@@ -124,7 +122,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (GameModel game in Model.Wishlist.Take(5))
+                    @foreach (DataLibrary.Models.GameModel game in Model.Wishlist.Take(5))
                     {
                         <tr>
                             <td>@game.Title</td>

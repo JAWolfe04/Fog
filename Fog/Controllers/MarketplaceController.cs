@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Fog.Models;
 using Microsoft.AspNetCore.Http;
 
@@ -17,7 +19,17 @@ namespace DataLibrary.Controllers
         }
         public IActionResult Competitions()
         {
-            return View(DataLibrary.DataAccess.SQLDataAccess.GetCompetitions());
+            List<CompetitionModel> comps = new List<CompetitionModel>();
+            foreach(var compData in DataLibrary.DataAccess.SQLDataAccess.GetCompetitions())
+            {
+                CompetitionModel comp = new CompetitionModel();
+                comp.Title = compData.Title;
+                comp.strDate = compData.Date.ToString("MM/dd/yyyy");
+                comp.GameTitle = compData.GameTitle;
+                comp.CompID = compData.CompID;
+                comps.Add(comp);
+            }
+            return View(comps);
         }
         public IActionResult Developers()
         {
@@ -50,7 +62,7 @@ namespace DataLibrary.Controllers
 
                 foreach (var developer in gameInfo.developers)
                 {
-                    if (developer.Username == Username)
+                    if (developer.Username.ToLower() == Username.ToLower())
                     {
                         gameInfo.IsDeveloper = true;
                         break;
@@ -68,7 +80,148 @@ namespace DataLibrary.Controllers
 
         public IActionResult EditGame(int GameID)
         {
-            return RedirectToAction("GameInfo", "Marketplace", new { GameID = GameID });
+            GameModel game = new GameModel();
+            DataLibrary.Models.GameModel gameData = DataLibrary.DataAccess.SQLDataAccess.GetGameInfo(GameID);
+            game.Title = gameData.Title;
+            game.price = gameData.price;
+            game.Genre = gameData.Genre;
+            game.GameID = GameID;
+            game.Desc = gameData.Desc;
+
+            return View(game);
+        }
+
+        [HttpPost]
+        public IActionResult EditGame(GameModel game)
+        {
+            if (ModelState.IsValid)
+            {
+                DataLibrary.Models.GameModel gameData = new DataLibrary.Models.GameModel();
+                gameData.GameID = game.GameID;
+                gameData.Title = game.Title;
+                gameData.Desc = game.Desc;
+                gameData.Genre = game.Genre;
+                gameData.price = game.price;
+                DataLibrary.DataAccess.SQLDataAccess.EditGame(gameData);
+
+                return RedirectToAction("GameInfo", new { GameID = game.GameID });
+            }
+
+            return View(game);
+        }
+
+        public IActionResult CreateGame()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateGame(GameModel gameModel)
+        {
+            if(ModelState.IsValid)
+            {
+                DataLibrary.Models.GameModel gameData = new DataLibrary.Models.GameModel();
+                gameData.Title = gameModel.Title;
+                gameData.Desc = gameModel.Desc;
+                gameData.price = gameModel.price;
+                gameData.Genre = gameModel.Genre;
+                int gameID = DataLibrary.DataAccess.SQLDataAccess.CreateGame(gameData);
+
+                string Username = HttpContext.Session.GetString("Username");
+                int devID = DataLibrary.DataAccess.SQLDataAccess.GetDevInfo(Username).ID;
+                DataLibrary.DataAccess.SQLDataAccess.AddGameDev(devID, gameID);
+
+                return RedirectToAction("GameInfo", new { GameID = gameID });
+            }
+
+            return View(gameModel);
+        }
+
+        public IActionResult AddForum(int GameID)
+        {
+            ForumModel forum = new ForumModel();
+            forum.GameID = GameID;
+
+            return View(forum);
+        }
+
+        [HttpPost]
+        public IActionResult AddForum(ForumModel forum)
+        {
+            if (ModelState.IsValid)
+            {
+                DataLibrary.Models.ForumModel forumData = new DataLibrary.Models.ForumModel();
+                forumData.Name = forum.Name;
+                forumData.Link = forum.Link;
+                forumData.GameID = forum.GameID;
+                DataLibrary.DataAccess.SQLDataAccess.AddGameForum(forumData);
+
+                return RedirectToAction("GameInfo", new { GameID = forum.GameID });
+            }
+
+            return View(forum);
+        }
+
+        public IActionResult RemoveForum(int GameID)
+        {
+            RemoveForumModel removeForum = new RemoveForumModel();
+            removeForum.GameID = GameID;
+            removeForum.forums = DataLibrary.DataAccess.SQLDataAccess.GetGameForums(GameID);
+            removeForum.forumList = new List<SelectListItem>();
+            for(int i = 0; i < removeForum.forums.Count; ++i)
+            {
+                removeForum.forumList.Add(new SelectListItem { Value = i.ToString(), Text = removeForum.forums[i].Name });
+            }
+
+            return View(removeForum);
+        }
+
+        [HttpPost]
+        public IActionResult RemoveForum(RemoveForumModel removeForum)
+        {
+            if(ModelState.IsValid)
+            {
+                removeForum.forums = DataLibrary.DataAccess.SQLDataAccess.GetGameForums(removeForum.GameID);
+                DataLibrary.Models.ForumModel forum = removeForum.forums[removeForum.position];
+                forum.GameID = removeForum.GameID;
+                DataLibrary.DataAccess.SQLDataAccess.RemoveGameForum(forum);
+
+                return RedirectToAction("GameInfo", new { GameID = forum.GameID });
+            }
+
+            return View(removeForum);
+        }
+
+        public IActionResult AddGameDev(int GameID)
+        {
+            EditGameDev editDev = new EditGameDev();
+            editDev.GameID = GameID;
+            editDev.devs = DataLibrary.DataAccess.SQLDataAccess.GetDevelopers();
+
+            return View(editDev);
+        }
+
+        [HttpPost]
+        public IActionResult AddGameDev(EditGameDev editDev)
+        {
+            DataLibrary.DataAccess.SQLDataAccess.AddGameDev(editDev.DevID, editDev.GameID);
+            return RedirectToAction("GameInfo", new { GameID = editDev.GameID });
+        }
+
+        public IActionResult RemoveGameDev(int GameID)
+        {
+            EditGameDev editDev = new EditGameDev();
+            editDev.GameID = GameID;
+            editDev.devs = DataLibrary.DataAccess.SQLDataAccess.GetGameDevelopers(GameID);
+
+            return View(editDev);
+        }
+
+        [HttpPost]
+        public IActionResult RemoveGameDev(EditGameDev editDev)
+        {
+            DataLibrary.DataAccess.SQLDataAccess.RemoveGameDev(editDev.DevID, editDev.GameID);
+            return RedirectToAction("GameInfo", new { GameID = editDev.GameID });
         }
 
         public IActionResult RemoveGame(int GameID)

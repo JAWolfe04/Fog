@@ -1,0 +1,22 @@
+﻿@model Fog.Models.EditGameDev
+@{
+    ViewData["Title"] = "Remove Game Developer";
+}
+
+<h1>Remove Game Developer</h1>
+
+<form asp-action="RemoveGameDev">
+    <input type="hidden" asp-for="GameID">
+    <div class="row mt-4 form-inline">
+        <select class="form-control" asp-for="DevID">
+            <option value="">Pick one</option>
+            @foreach (var dev in Model.devs)
+            {
+                <option value=@dev.ID>@dev.Name</option>
+            }
+        </select>
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </div>
+    </div>
+</form>

@@ -1,0 +1,32 @@
+﻿@model Fog.Models.CompetitionModel
+@{
+    ViewData["Title"] = "Edit Competition";
+}
+
+<h1>Edit Competition</h1>
+
+<form asp-action="EditCompetition">
+    <input type="hidden" asp-for="CompID">
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Date" class="control-label"></label>
+        <input asp-for="Date" class="form-control" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="GameTitle" class="control-label"></label>
+        <input asp-for="GameTitle" class="form-control" />
+        <span asp-validation-for="GameTitle" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea class="form-control" asp-for="Description" rows="10" style="min-width: 100%; resize:none"></textarea>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-primary" />
+    </div>
+</form>
