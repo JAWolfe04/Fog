@@ -24,6 +24,7 @@ namespace Fog.Models
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Email cannot be empty!")]
         public string Email { get; set; }
+
         public int StreamID { get; set; }
     }
 }

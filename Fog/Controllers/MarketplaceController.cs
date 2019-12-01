@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Fog.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace Fog.Controllers
+namespace DataLibrary.Controllers
 {
     public class MarketplaceController : Controller
     {
