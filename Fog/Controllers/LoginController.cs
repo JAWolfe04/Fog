@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Fog.Models;
-using DataLibrary.Models;
-using DeveloperModel = DataLibrary.Models.DeveloperModel;
 
-namespace DataLibrary.Controllers
+namespace Fog.Controllers
 {
     public class LoginController : Controller
     {
@@ -32,7 +30,7 @@ namespace DataLibrary.Controllers
                     case 1:
                         return RedirectToAction("DevHome", "Developer");
                     case 2:
-                        return RedirectToAction("AdminHome", "Home");
+                        return RedirectToAction("AdminHome", "Admin");
                     default:
                         return RedirectToAction("Index", "Home");
                 }
@@ -50,7 +48,7 @@ namespace DataLibrary.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreatePlayer(Models.PlayerModel player)
+        public IActionResult CreatePlayer(PlayerModel player)
         {
             if(ModelState.IsValid)
             {
@@ -81,7 +79,7 @@ namespace DataLibrary.Controllers
 
         public IActionResult EditPlayer()
         {
-            Models.PlayerModel player = new Models.PlayerModel();
+            PlayerModel player = new PlayerModel();
             DataLibrary.Models.PlayerModel playerData = DataLibrary.DataAccess.SQLDataAccess.GetPlayerInfo(
                 HttpContext.Session.GetString("Username"));
             player.Username = playerData.Username;
@@ -92,7 +90,7 @@ namespace DataLibrary.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditPlayer(Models.PlayerModel player)
+        public IActionResult EditPlayer(PlayerModel player)
         {
             DataLibrary.Models.PlayerModel playerData = new DataLibrary.Models.PlayerModel();
             playerData.Username = HttpContext.Session.GetString("Username");
@@ -114,14 +112,13 @@ namespace DataLibrary.Controllers
                 return Logout();
         }
 
-
         public IActionResult CreateDev()
         {
             return View();
 
         }
         [HttpPost]
-        public IActionResult CreateDev(Fog.Models.DeveloperModel developer)
+        public IActionResult CreateDev(DeveloperModel developer)
         {
             
             if (ModelState.IsValid)
@@ -134,23 +131,23 @@ namespace DataLibrary.Controllers
                 else
                 {
                     DataLibrary.Models.DeveloperModel DeveloperData = new DataLibrary.Models.DeveloperModel();
+                    DataLibrary.Models.PlayerModel playerData = new DataLibrary.Models.PlayerModel();
                     DeveloperData.About = developer.About;
                     DeveloperData.Account = developer.BankAccountNumber.ToString();
                     DeveloperData.Email = developer.Email;
                     DeveloperData.Link = developer.WebLink;
                     DeveloperData.Name = developer.CompanyName;
-                    DeveloperData.Password = developer.Password;
                     DeveloperData.Phone = developer.Phone;
                     DeveloperData.Routing = developer.BankRoutingNumber.ToString();
                     DeveloperData.Username = developer.Username;
 
-                    DataLibrary.DataAccess.SQLDataAccess.CreateDeveloper(DeveloperData);
-                    return RedirectToAction("AdminHome", "Home");
+
+                    DataLibrary.DataAccess.SQLDataAccess.CreateDeveloper(DeveloperData, developer.Password);
+                    return RedirectToAction("AdminHome", "Admin");
                 }
             }
             return View(developer);
         }
-
 
         public IActionResult RemoveDev()
         {
@@ -164,8 +161,9 @@ namespace DataLibrary.Controllers
         {
             return View();
         }
+
         [HttpPost]
-        public IActionResult CreateAdmin(Fog.Models.PlayerModel player)
+        public IActionResult CreateAdmin(PlayerModel player)
         {
             if (ModelState.IsValid)
             {
@@ -182,9 +180,6 @@ namespace DataLibrary.Controllers
                     playerData.Password = player.Password;
                     playerData.Username = player.Username;
                     DataLibrary.DataAccess.SQLDataAccess.CreateAdmin(playerData);
-                    //HttpContext.Session.SetString("DisplayName", player.DisplayName);
-                    //HttpContext.Session.SetString("Username", player.Username);
-                    //HttpContext.Session.SetInt32("Permission", 2);
 
                     return RedirectToAction("AdminHome", "Home");
                 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Fog.Models
 {
@@ -30,7 +26,7 @@ namespace Fog.Models
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Company Name cannot be empty!")]
-        [StringLength(20, MinimumLength = 3)]
+        [StringLength(45, MinimumLength = 3)]
         [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
 
@@ -52,10 +48,10 @@ namespace Fog.Models
 
         [Display(Name = "Bank")]
         [Required(ErrorMessage = "Bank cannot be empty!")]
-        public int BankRoutingNumber { get; set; }
+        public string BankRoutingNumber { get; set; }
 
         [Display(Name = "Account")]
         [Required(ErrorMessage = "Account cannot be empty!")]
-        public int BankAccountNumber { get; set; }
+        public string BankAccountNumber { get; set; }
     }
 }

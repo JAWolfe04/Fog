@@ -1,11 +1,9 @@
-
-﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
 using Fog.Models;
 
-namespace DataLibrary.Controllers
+namespace Fog.Controllers
 {
     public class CompetitionController : Controller
     {

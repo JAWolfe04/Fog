@@ -9,18 +9,21 @@ namespace DataLibrary.DataAccess
 {
     public static class SQLDataAccess
     {
+        private static string connectionKey = "";
         private static IConfiguration Configuration;
 
         public static void SetupConnection(IConfiguration configuration)
         {
             Configuration = configuration;
+            connectionKey = "DBConn:ConnectionString";
+            //connectionKey = "LocalConn:ConnectionString"; //For Local DB
         }
 
         public static List<GameModel> GetPurchasedGames(string Username)
         {
             List<GameModel> games = new List<GameModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_PurchasedGame", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -48,7 +51,7 @@ namespace DataLibrary.DataAccess
         {
             List<PlayerModel> friends = new List<PlayerModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_Friends", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -73,7 +76,7 @@ namespace DataLibrary.DataAccess
         {
             List<StreamModel> streams = new List<StreamModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_FollowedStreams", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -100,7 +103,7 @@ namespace DataLibrary.DataAccess
         {
             List<GameModel> games = new List<GameModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_WishList", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -128,7 +131,7 @@ namespace DataLibrary.DataAccess
         {
             List<PlayerModel> players = new List<PlayerModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_Players", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -152,7 +155,7 @@ namespace DataLibrary.DataAccess
         {
             List<GameModel> games = new List<GameModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_GameList", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -179,7 +182,7 @@ namespace DataLibrary.DataAccess
         {
             List<StreamModel> streams = new List<StreamModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_Streams", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -206,7 +209,7 @@ namespace DataLibrary.DataAccess
         {
             List<DeveloperModel> developers = new List<DeveloperModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_Developers", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -230,7 +233,7 @@ namespace DataLibrary.DataAccess
         {
             List<CompetitionModel> competitions = new List<CompetitionModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_Competitions", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -257,7 +260,7 @@ namespace DataLibrary.DataAccess
         {
             PlayerModel player = new PlayerModel();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_PlayerInfo", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -283,7 +286,7 @@ namespace DataLibrary.DataAccess
         {
             int isFriend = 0;
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("is_Friend", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -305,7 +308,7 @@ namespace DataLibrary.DataAccess
         {
             int gameOwned = 0;
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("is_GameOwned", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -327,7 +330,7 @@ namespace DataLibrary.DataAccess
         {
             int wishlisted = 0;
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("is_WishListed", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -347,7 +350,7 @@ namespace DataLibrary.DataAccess
 
         public static void AddWishlist(string Username, int GameID)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("add_WishList", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -361,7 +364,7 @@ namespace DataLibrary.DataAccess
 
         public static void RemoveWishlist(string Username, int GameID)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("remove_Wishlist", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -375,7 +378,7 @@ namespace DataLibrary.DataAccess
 
         public static void AddFriend(string PlayerUsername, string FriendUsername)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("add_Friend", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -389,7 +392,7 @@ namespace DataLibrary.DataAccess
 
         public static void RemoveFriend(string PlayerUsername, string FriendUsername)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("remove_Friend", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -403,7 +406,7 @@ namespace DataLibrary.DataAccess
 
         public static void CreatePlayer(PlayerModel player)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("create_Player", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -419,7 +422,7 @@ namespace DataLibrary.DataAccess
 
         public static void EditPlayer(PlayerModel player)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("update_Player", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -435,7 +438,7 @@ namespace DataLibrary.DataAccess
 
         public static void DeletePlayer(string Username)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("remove_Account", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -450,7 +453,7 @@ namespace DataLibrary.DataAccess
         {
             bool playerExists = false;
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("verify_Player", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -474,7 +477,7 @@ namespace DataLibrary.DataAccess
         public static int getGameID(string gameName)
         {
             int gameID = 0;
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_GameTitle", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -492,7 +495,7 @@ namespace DataLibrary.DataAccess
 
         public static void RemoveGame(int GameID)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("remove_Game", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -505,7 +508,7 @@ namespace DataLibrary.DataAccess
 
         public static void CreateCompetition(CompetitionModel competition)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("create_Competition", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -523,7 +526,7 @@ namespace DataLibrary.DataAccess
         {
             CompetitionModel comp = new CompetitionModel();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_CompInfo", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -549,7 +552,7 @@ namespace DataLibrary.DataAccess
         {
             List<PlayerModel> players = new List<PlayerModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_CompPlayers", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -573,7 +576,7 @@ namespace DataLibrary.DataAccess
         {
             int entered = 0;
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("is_EnteredComp", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -593,7 +596,7 @@ namespace DataLibrary.DataAccess
 
         public static void EnterCompetition(int CompID, string Username)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("enter_Competition", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -607,7 +610,7 @@ namespace DataLibrary.DataAccess
 
         public static void LeaveCompetition(int CompID, string Username)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("leave_Competition", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -621,7 +624,7 @@ namespace DataLibrary.DataAccess
 
         public static void EditCompetition(CompetitionModel comp)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("update_Competition", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -638,7 +641,7 @@ namespace DataLibrary.DataAccess
 
         public static void RemoveCompetition(int compID)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("remove_Competition", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -651,7 +654,7 @@ namespace DataLibrary.DataAccess
 
         public static void CreateSale(SaleModel sale)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("create_Sale", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -668,7 +671,7 @@ namespace DataLibrary.DataAccess
         {
             SaleModel sale = new SaleModel();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_Sale", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -692,7 +695,7 @@ namespace DataLibrary.DataAccess
         {
             int streamID = 0;
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("create_Stream", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -713,7 +716,7 @@ namespace DataLibrary.DataAccess
 
         public static void HostStream(string Username, int StreamID)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("host_Stream", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -729,7 +732,7 @@ namespace DataLibrary.DataAccess
         {
             StreamModel stream = new StreamModel();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_StreamInfo", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -753,7 +756,7 @@ namespace DataLibrary.DataAccess
         {
             List<PlayerModel> hosts = new List<PlayerModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_StreamHosts", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -777,7 +780,7 @@ namespace DataLibrary.DataAccess
         {
             GameModel gameInfo = new GameModel();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_GameInfo", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -802,7 +805,7 @@ namespace DataLibrary.DataAccess
         {
             List<DeveloperModel> developers = new List<DeveloperModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_GameDevelopers", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -827,7 +830,7 @@ namespace DataLibrary.DataAccess
         {
             List<ForumModel> forums = new List<ForumModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_GameForums", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -851,7 +854,7 @@ namespace DataLibrary.DataAccess
         {
             int relation = 0;
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("is_StreamHost", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -873,7 +876,7 @@ namespace DataLibrary.DataAccess
         {
             int relation = 0;
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("is_StreamFollower", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -893,7 +896,7 @@ namespace DataLibrary.DataAccess
 
         public static void JoinStream(int StreamID, string Username)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("join_Stream", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -907,7 +910,7 @@ namespace DataLibrary.DataAccess
 
         public static void LeaveStream(int StreamID, string Username)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("leave_Stream", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -921,7 +924,7 @@ namespace DataLibrary.DataAccess
 
         public static void FollowStream(int StreamID, string Username)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("follow_Stream", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -934,7 +937,7 @@ namespace DataLibrary.DataAccess
         }
         public static void UnfollowStream(int StreamID, string Username)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("unfollow_Stream", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -948,7 +951,7 @@ namespace DataLibrary.DataAccess
 
         public static void RemoveStream(int StreamID)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("remove_Stream", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -961,7 +964,7 @@ namespace DataLibrary.DataAccess
 
         public static void EditStream(StreamModel stream)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("update_Stream", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -977,7 +980,7 @@ namespace DataLibrary.DataAccess
 
         public static void CreatePurchase(PurchaseModel purchase)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("create_Purchase", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -1000,7 +1003,7 @@ namespace DataLibrary.DataAccess
         {
             List<GameModel> games = new List<GameModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_DevGame", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -1025,7 +1028,7 @@ namespace DataLibrary.DataAccess
         {
             DeveloperModel developer = new DeveloperModel();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_DevInfo", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -1040,8 +1043,6 @@ namespace DataLibrary.DataAccess
                     developer.Email = rdr["DevEmail"].ToString();
                     developer.Link = rdr["DevLink"].ToString();
                     developer.Phone = rdr["DevPhone"].ToString();
-                    developer.Routing = rdr["DevRoutingNum"].ToString();
-                    developer.Account = rdr["DevAccountNum"].ToString();
                     developer.Username = rdr["DevUsername"].ToString();
                 }
                 conn.Close();
@@ -1054,7 +1055,7 @@ namespace DataLibrary.DataAccess
         {
             DeveloperModel developer = new DeveloperModel();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_DevByName", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -1069,8 +1070,6 @@ namespace DataLibrary.DataAccess
                     developer.Email = rdr["DevEmail"].ToString();
                     developer.Link = rdr["DevLink"].ToString();
                     developer.Phone = rdr["DevPhone"].ToString();
-                    developer.Routing = rdr["DevRoutingNum"].ToString();
-                    developer.Account = rdr["DevAccountNum"].ToString();
                     developer.Username = Username;
                 }
                 conn.Close();
@@ -1079,11 +1078,32 @@ namespace DataLibrary.DataAccess
             return developer;
         }
 
+        public static void CreateDeveloper(DeveloperModel dev, string password)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
+            {
+                MySqlCommand cmd = new MySqlCommand("create_Developer", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@devName", dev.Name);
+                cmd.Parameters.AddWithValue("@about", dev.About);
+                cmd.Parameters.AddWithValue("@email", dev.Email);
+                cmd.Parameters.AddWithValue("@link", dev.Link);
+                cmd.Parameters.AddWithValue("@phone", dev.Phone);
+                cmd.Parameters.AddWithValue("@account_num", dev.Account);
+                cmd.Parameters.AddWithValue("@routing_num", dev.Routing);
+                cmd.Parameters.AddWithValue("@player_username", dev.Username);
+                cmd.Parameters.AddWithValue("@password", password);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
         public static List<GameStatModel> GetDevGameStats(int DevID)
         {
             List<GameStatModel> gameStats = new List<GameStatModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_DevGameStat", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -1109,7 +1129,7 @@ namespace DataLibrary.DataAccess
         {
             List<GenreStatModel> genreStats = new List<GenreStatModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("get_DevGenreStat", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -1130,11 +1150,85 @@ namespace DataLibrary.DataAccess
             return genreStats;
         }
 
+        public static List<GameStatModel> GetAdminGameStats()
+        {
+            List<GameStatModel> gameStats = new List<GameStatModel>();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_GameStat", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    GameStatModel gameStat = new GameStatModel();
+                    gameStat.Title = rdr["GameTitle"].ToString();
+                    gameStat.GameID = Convert.ToInt32(rdr["GameID"]);
+                    gameStat.Purchases = Convert.ToInt32(rdr["Purchase"]);
+                    gameStat.Total = Convert.ToDecimal(rdr["Total"]);
+                    gameStats.Add(gameStat);
+                }
+                conn.Close();
+            }
+
+            return gameStats;
+        }
+
+        public static List<GenreStatModel> GetAdminGenreStats()
+        {
+            List<GenreStatModel> genrestats = new List<GenreStatModel>();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_GenreStat", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    GenreStatModel genreStat = new GenreStatModel();
+                    genreStat.Genre = rdr["GameGenre"].ToString();
+                    genreStat.purchases = Convert.ToInt32(rdr["Purchase"]);
+                    genreStat.Total = Convert.ToDecimal(rdr["Total"]);
+                    genrestats.Add(genreStat);
+                }
+                conn.Close();
+            }
+
+            return genrestats;
+        }
+
+        public static List<AdminDevStatsModel> GetAdminDevStats()
+        {
+            List<AdminDevStatsModel> adminDevStats = new List<AdminDevStatsModel>();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_DeveloperStat", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    AdminDevStatsModel devStat = new AdminDevStatsModel();
+                    devStat.DevID = Convert.ToInt32(rdr["DevID"]);
+                    devStat.DevName = rdr["DevName"].ToString();
+                    devStat.Purchase = Convert.ToInt32(rdr["Purchase"]);
+                    devStat.Total = Convert.ToDecimal(rdr["Total"]);
+                    adminDevStats.Add(devStat);
+                }
+                conn.Close();
+            }
+
+            return adminDevStats;
+        }
+
         public static int CreateGame(GameModel game)
         {
             int gameID = 0;
 
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("create_Game", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -1156,7 +1250,7 @@ namespace DataLibrary.DataAccess
 
         public static void EditGame(GameModel game)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("update_Game", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -1173,7 +1267,7 @@ namespace DataLibrary.DataAccess
 
         public static void AddGameDev(int DevID, int GameID)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("add_GameDev", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -1187,7 +1281,7 @@ namespace DataLibrary.DataAccess
 
         public static void RemoveGameDev(int DevID, int GameID)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("remove_GameDev", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -1201,7 +1295,7 @@ namespace DataLibrary.DataAccess
 
         public static void AddGameForum(ForumModel forum)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("create_Forum", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -1216,12 +1310,79 @@ namespace DataLibrary.DataAccess
 
         public static void RemoveGameForum(ForumModel forum)
         {
-            using (MySqlConnection conn = new MySqlConnection(Configuration["DBConn:ConnectionString"]))
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
             {
                 MySqlCommand cmd = new MySqlCommand("remove_Forum", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Link", forum.Link);
                 cmd.Parameters.AddWithValue("@GameID", forum.GameID);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static void CreateAdmin(PlayerModel player)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
+            {
+                MySqlCommand cmd = new MySqlCommand("create_Admin", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@user_name", player.Username);
+                cmd.Parameters.AddWithValue("@admin_password", player.Password);
+                cmd.Parameters.AddWithValue("@display_name", player.DisplayName);
+                cmd.Parameters.AddWithValue("@email", player.Email);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static DeveloperModel GetDevInfoAccount(int DevID, string Username)
+        {
+            DeveloperModel developer = new DeveloperModel();
+
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
+            {
+                MySqlCommand cmd = new MySqlCommand("get_DevInfoAccounts", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ID", DevID);
+                cmd.Parameters.AddWithValue("@player_username", Username);
+                conn.Open();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    developer.ID = DevID;
+                    developer.Name = rdr["DevName"].ToString();
+                    developer.About = rdr["DevAbout"].ToString();
+                    developer.Email = rdr["DevEmail"].ToString();
+                    developer.Link = rdr["DevLink"].ToString();
+                    developer.Phone = rdr["DevPhone"].ToString();
+                    developer.Routing = rdr["DevRoutingNum"].ToString();
+                    developer.Account = rdr["DevAccountNum"].ToString();
+                    developer.Username = rdr["DevUsername"].ToString();
+                }
+                conn.Close();
+            }
+
+            return developer;
+        }
+
+        public static void EditDev(DeveloperModel dev)
+        {
+            using (MySqlConnection conn = new MySqlConnection(Configuration[connectionKey]))
+            {
+                MySqlCommand cmd = new MySqlCommand("update_Dev", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@DID", dev.ID);
+                cmd.Parameters.AddWithValue("@DName", dev.Name);
+                cmd.Parameters.AddWithValue("@about", dev.About);
+                cmd.Parameters.AddWithValue("@email", dev.Email);
+                cmd.Parameters.AddWithValue("@link", dev.Link);
+                cmd.Parameters.AddWithValue("@phone", dev.Phone);
+                cmd.Parameters.AddWithValue("@account_num", dev.Account);
+                cmd.Parameters.AddWithValue("@routing_num", dev.Routing);
+                cmd.Parameters.AddWithValue("@player_username", dev.Username);
                 conn.Open();
                 cmd.ExecuteNonQuery();
                 conn.Close();

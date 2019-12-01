@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Fog.Models;
 
-namespace DataLibrary.Controllers
+namespace Fog.Controllers
 {
     public class SaleController : Controller
     {

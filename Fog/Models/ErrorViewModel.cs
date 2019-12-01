@@ -1,5 +1,3 @@
-using System;
-
 namespace Fog.Models
 {
     public class ErrorViewModel

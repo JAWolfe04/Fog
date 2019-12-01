@@ -4,7 +4,7 @@ using Fog.Models;
 
 using Microsoft.AspNetCore.Http;
 
-namespace DataLibrary.Controllers
+namespace Fog.Controllers
 {
     public class HomeController : Controller
     {
@@ -51,16 +51,6 @@ namespace DataLibrary.Controllers
             string PlayerUsername = HttpContext.Session.GetString("Username");
             DataLibrary.DataAccess.SQLDataAccess.RemoveFriend(PlayerUsername, Username);
             return RedirectToAction("PlayerInfo", "Home", new { playerUsername = Username });
-        }
-
-        public IActionResult DevHome()
-        {
-            return View();
-        }
-
-        public IActionResult AdminHome()
-        {
-            return View();
         }
 
         public IActionResult Privacy()
